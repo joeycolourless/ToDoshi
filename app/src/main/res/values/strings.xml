@@ -1,0 +1,43 @@
+<resources>
+    <string name="app_name">ToDoshi</string>
+    <string name="todo_title_hint">Enter a title for ToDo</string>
+    <string name="todo_title_label">Title</string>
+    <string name="todo_details_label">Details</string>
+    <string name="todo_detail_hint">Enter details</string>
+    <string name="todo_priority_label">Priority?</string>
+    <string name="date_picker_title">Red time</string>
+    <string name="new_todo">New Task</string>
+    <string name="show_subtitle">Show Subtitle</string>
+    <string name="hide_subtitle">Hide Subtitle</string>
+    <string name="subtitle_format">%1$s tasks</string>
+    <string name="delete_task">Delete</string>
+    <string name="todo_list_fragment_text_view">Enter your first task</string>
+    <plurals name="subtitle_plural">
+        <item quantity="one">%1$s task</item>
+        <item quantity="other">%1$s tasks</item>
+    </plurals>
+    <string name="dialog_delete_task">Delete task</string>
+    <string name="message_dialog_fragment">Delete? Are you sure?</string>
+    <string name="menu_todo_fragment_share">Share</string>
+    <string name="todo_share_priority_yes">The task has priority</string>
+    <string name="todo_share_priority_no">The task hasn\'t priority</string>
+    <string name="todo_share">%1$s! The task must be finish to %2$s in %3$s on %4$s. %5$s</string>
+    <string name="todo_share_title">ToDoshi. Share your task</string>
+    <string name="send_todo">Send task via</string>
+    <string name="detail_text_view_tablet_fragment_detail">Here will be your task detail</string>
+    <string name="tab_name_tab_layout_inprogress">Actual</string>
+    <string name="tab_name_tab_layout_finish">Completed</string>
+    <string name="todo_fragment_hint_text_view">Here will be your completed tasks</string>
+    <string name="todo_time_label">Deadline</string>
+    <string name="pls_enter_deadline">Pls enter deadline</string>
+    <string name="the_notication_date_not_introduced">The notification date not introduced</string>
+    <string name="text_dialog_window_back_button">You can\'t create without title. Delete?</string>
+    <string name="delete_message_delete_button">Are you wanna delete task?</string>
+    <string name="save_changes_message">Save changes?</string>
+    <string name="text_if_save_without_title">You can\'t save without title. Delete?</string>
+    <string name="checkbox_text_label_notification">Notification?</string>
+    <string name="empty">Empty</string>
+    <string name="text_do_not_apply_changes">You can\'t save without title, do not apply changes?</string>
+    <string name="done">Done?</string>
+    <string name="any_comments">Any comments?</string>
+</resources>
