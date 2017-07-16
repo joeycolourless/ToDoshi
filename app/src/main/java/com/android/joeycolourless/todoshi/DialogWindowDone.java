@@ -13,15 +13,7 @@ import android.support.v7.app.AlertDialog;
 
 public class DialogWindowDone extends DialogFragment {
 
-    public static final String EXTRA_BOOLEAN = "com.android.joeycolourless.todoshi.booleanextra";
-
-
-
     private static final String ARG_UUID = "uuid";
-
-
-
-
 
     public static DialogWindowDone newInstance(ToDo toDo){
         Bundle args = new Bundle();

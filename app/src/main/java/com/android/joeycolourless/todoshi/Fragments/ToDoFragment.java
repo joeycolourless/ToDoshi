@@ -31,6 +31,7 @@ import com.android.joeycolourless.todoshi.DialogWindowMessageWithFinish;
 import com.android.joeycolourless.todoshi.R;
 import com.android.joeycolourless.todoshi.ToDo;
 import com.android.joeycolourless.todoshi.ToDoLab;
+import com.android.joeycolourless.todoshi.datebase.ToDODbSchema;
 import com.kunzisoft.switchdatetime.SwitchDateTimeDialogFragment;
 
 import java.text.SimpleDateFormat;
@@ -44,9 +45,7 @@ import java.util.UUID;
 
 import static com.android.joeycolourless.todoshi.datebase.ToDODbSchema.ToDoTable;
 
-/**
- * Created by admin on 12.03.2017.
- */
+
 
 public class ToDoFragment extends Fragment implements OnBackPressedListener {
 
@@ -407,7 +406,9 @@ public class ToDoFragment extends Fragment implements OnBackPressedListener {
         doneButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                commentsMessage();
+                updateToDo();
+                doneToDo(mToDo);
+                getActivity().finish();
             }
         });
 
@@ -461,6 +462,11 @@ public class ToDoFragment extends Fragment implements OnBackPressedListener {
             updateToDo();
             getActivity().finish();
         }
+    }
+
+    private void doneToDo(ToDo toDo){
+        ToDoLab.get(getActivity()).addToDo(toDo, ToDODbSchema.ToDoCompletedTable.NAME);
+        ToDoLab.get(getActivity()).deleteToDo(toDo, ToDoTable.NAME, ToDoTable.Cols.UUID);
     }
 
     private void updateToDo(){

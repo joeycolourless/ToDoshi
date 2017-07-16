@@ -18,9 +18,6 @@ import com.android.joeycolourless.todoshi.datebase.ToDODbSchema;
 
 import java.util.List;
 
-/**
- * Created by admin on 28.03.2017.
- */
 
 public class ToDoListCompletedFragment extends Fragment {
     private RecyclerView mRecyclerView;
@@ -68,8 +65,13 @@ public class ToDoListCompletedFragment extends Fragment {
         }
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateUI();
+    }
 
-        private class ToDoHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    private class ToDoHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
             private TextView mTitleTextView;
             private TextView mDateTextView;
             private CheckBox mPriorityCheckBox;
