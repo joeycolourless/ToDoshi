@@ -20,7 +20,7 @@ app/.gitignore
 app/build.gradle
 app/libs/
 app/proguard-rules.pro
-app/src/
+
 build.gradle
 gradle.properties
 gradle/
