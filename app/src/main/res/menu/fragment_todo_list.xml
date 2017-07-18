@@ -2,9 +2,19 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
+        android:id="@+id/menu_item_search"
+        android:title="@string/search"
+        app:actionViewClass="android.support.v7.widget.SearchView"
+        app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/menu_item_clear"
+        android:title="@string/clear"
+        app:showAsAction="never"/>
+    <item
         android:id="@+id/menu_item_show_subtitle"
         android:title="@string/show_subtitle"
-        app:showAsAction="ifRoom"/>
+        android:icon="@drawable/ic_subtitles_white_24dp"
+        app:showAsAction="never"/>
 
 
 </menu>

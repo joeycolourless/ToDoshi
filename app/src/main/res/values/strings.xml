@@ -40,4 +40,6 @@
     <string name="text_do_not_apply_changes">You can\'t save without title, do not apply changes?</string>
     <string name="done">Done?</string>
     <string name="any_comments">Any comments?</string>
+    <string name="search">Search</string>
+    <string name="clear">Clear</string>
 </resources>

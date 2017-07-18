@@ -19,9 +19,7 @@ import java.util.UUID;
 import static com.android.joeycolourless.todoshi.datebase.ToDODbSchema.ToDoCompletedTable;
 import static com.android.joeycolourless.todoshi.datebase.ToDODbSchema.ToDoTable;
 
-/**
- * Created by admin on 13.03.2017.
- */
+
 
 public class ToDoLab {
     private static ToDoLab sToDoLab;
@@ -121,6 +119,34 @@ public class ToDoLab {
         }
     }
 
+    public List<ToDo> getToDosSearch(String searchTerm, String tableName){
+        List<ToDo> toDos = new ArrayList<>();
+        ToDoCursorWrapper cursor = queryToDos(tableName,  "(" + ToDoTable.Cols.TITLE + " LIKE '%" + searchTerm+"%')" +
+        "OR (" + ToDoTable.Cols.DETAILS + " LIKE '%" + searchTerm + "%'",null);
+        try{
+            cursor.moveToFirst();
+            while (!cursor.isAfterLast()){
+                if (tableName.equals(ToDoTable.NAME)) {
+                    toDos.add(cursor.getToDo());
+                }else {
+                    toDos.add(cursor.getCompletedTodo());
+                }
+                cursor.moveToNext();
+            }
+        }finally {
+            cursor.close();
+        }
+        Collections.sort(toDos, new Comparator<ToDo>() {
+            @Override
+            public int compare(ToDo o1, ToDo o2) {
+                return o1.getDate().compareTo(o2.getDate());
+            }
+        });
+
+        return toDos;
+
+    }
+
     public File getPhotoFile(ToDo toDo){
         File externalFilesDir = mContext.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
 
@@ -172,4 +198,5 @@ public class ToDoLab {
         );
         return new ToDoCursorWrapper(cursor);
     }
+
 }

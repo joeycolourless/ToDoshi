@@ -10,16 +10,9 @@ import java.util.UUID;
 
 import static com.android.joeycolourless.todoshi.datebase.ToDODbSchema.*;
 
-/**
- * Created by admin on 19.03.2017.
- */
 
 public class ToDoCursorWrapper extends CursorWrapper {
-    /**
-     * Creates a cursor wrapper.
-     *
-     * @param cursor The underlying cursor to wrap.
-     */
+
     public ToDoCursorWrapper(Cursor cursor) {
         super(cursor);
     }

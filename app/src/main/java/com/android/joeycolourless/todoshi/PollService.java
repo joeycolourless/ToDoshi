@@ -19,9 +19,6 @@ import com.android.joeycolourless.todoshi.datebase.ToDODbSchema;
 import java.util.Date;
 import java.util.List;
 
-/**
- * Created by admin on 16.06.2017.
- */
 
 public class PollService extends IntentService {
     private static final String TAG = "PollService";
@@ -62,27 +59,29 @@ public class PollService extends IntentService {
         ToDoLab todoLab = ToDoLab.get(context);
         List<ToDo> toDos = todoLab.getToDos(ToDODbSchema.ToDoTable.NAME);
 
-        Intent notificationIntent = new Intent(context, ToDoListActivity.class);
-        PendingIntent contentIntent = PendingIntent.getActivity(context,
-                0, notificationIntent,
-                PendingIntent.FLAG_CANCEL_CURRENT);
 
-        Resources res = context.getResources();
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
-
-        builder.setContentIntent(contentIntent)
-                .setSmallIcon(R.drawable.ic_add_white_18dp) //small picture
-                .setLargeIcon(BitmapFactory.decodeResource(res, R.drawable.ic_view_carousel_black_32dp)) //big picture
-                .setWhen(System.currentTimeMillis())
-                .setAutoCancel(true);
-
-        NotificationManager notificationManager = (NotificationManager) context
-                .getSystemService(Context.NOTIFICATION_SERVICE);
 
         for (ToDo toDo : toDos) {
             if (toDo.getNotificationDate().getTime() > toDo.getDate().getTime()) {
                 long time = toDo.getNotificationDate().getTime() - new Date().getTime();
                 if (time < TIME_DIFFERENCE && time > 0 && toDo.isNotification()) {
+
+                    Intent notificationIntent = ToDoPagerActivity.newIntent(this, toDo.getId());
+                    PendingIntent contentIntent = PendingIntent.getActivity(context,
+                            0, notificationIntent,
+                            PendingIntent.FLAG_CANCEL_CURRENT);
+
+                    Resources res = context.getResources();
+                    NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
+
+                    builder.setContentIntent(contentIntent)
+                            .setSmallIcon(R.drawable.ic_add_white_18dp) //small picture
+                            .setLargeIcon(BitmapFactory.decodeResource(res, R.drawable.ic_view_carousel_black_32dp)) //big picture
+                            .setWhen(System.currentTimeMillis())
+                            .setAutoCancel(true);
+
+                    NotificationManager notificationManager = (NotificationManager) context
+                            .getSystemService(Context.NOTIFICATION_SERVICE);
 
                     builder.setContentTitle(toDo.getTitle())
                             .setContentText(toDo.getDetails());

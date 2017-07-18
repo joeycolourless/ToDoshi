@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -25,6 +26,7 @@ import com.android.joeycolourless.todoshi.ToDoLab;
 import com.android.joeycolourless.todoshi.datebase.ToDODbSchema;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -47,6 +49,7 @@ public class ToDoListFragment extends Fragment {
     private boolean mSubtitleVisible;
     private TextView mTextView;
     private Callbacks mCallbacks;
+    private List<ToDo> mToDos = new ArrayList<>();
 
 
     public interface Callbacks{
@@ -126,6 +129,26 @@ public class ToDoListFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         inflater.inflate(R.menu.fragment_todo_list, menu);
+
+        MenuItem searchItem = menu.findItem(R.id.menu_item_search);
+
+
+        final SearchView searchView = (SearchView) searchItem.getActionView();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                Log.d(TAG, "Query textSubmit: " + query);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                mToDos = ToDoLab.get(getActivity()).getToDosSearch(newText, ToDoTable.NAME);
+                mAdapter.setToDos(mToDos);
+                mAdapter.notifyDataSetChanged();
+                return false;
+            }
+        });
 
         MenuItem subtitleItem = menu.findItem(R.id.menu_item_show_subtitle);
         if (mSubtitleVisible) {
