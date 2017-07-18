@@ -11,6 +11,7 @@ import android.content.res.Resources;
 import android.graphics.BitmapFactory;
 import android.os.SystemClock;
 import android.support.annotation.Nullable;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.android.joeycolourless.todoshi.datebase.ToDODbSchema;
@@ -67,7 +68,7 @@ public class PollService extends IntentService {
                 PendingIntent.FLAG_CANCEL_CURRENT);
 
         Resources res = context.getResources();
-        Notification.Builder builder = new Notification.Builder(context);
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context);
 
         builder.setContentIntent(contentIntent)
                 .setSmallIcon(R.drawable.ic_add_white_18dp) //small picture
