@@ -137,15 +137,18 @@ public class ToDoListFragment extends Fragment {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                Log.d(TAG, "Query textSubmit: " + query);
                 return true;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
                 mToDos = ToDoLab.get(getActivity()).getToDosSearch(newText, ToDoTable.NAME);
+                if (mToDos == null){
+                    return true;
+                }
                 mAdapter.setToDos(mToDos);
                 mAdapter.notifyDataSetChanged();
+
                 return false;
             }
         });

@@ -121,8 +121,11 @@ public class ToDoLab {
 
     public List<ToDo> getToDosSearch(String searchTerm, String tableName){
         List<ToDo> toDos = new ArrayList<>();
+        String[] title = new String[2];
+        title[0] = ToDoTable.Cols.DETAILS;
+        title[1] = ToDoTable.Cols.TITLE;
         ToDoCursorWrapper cursor = queryToDos(tableName,  "(" + ToDoTable.Cols.TITLE + " LIKE '%" + searchTerm+"%')" +
-        "OR (" + ToDoTable.Cols.DETAILS + " LIKE '%" + searchTerm + "%'",null);
+        "OR (" + ToDoTable.Cols.DETAILS + " LIKE '%" + searchTerm + "%')",null);
         try{
             cursor.moveToFirst();
             while (!cursor.isAfterLast()){
@@ -142,7 +145,9 @@ public class ToDoLab {
                 return o1.getDate().compareTo(o2.getDate());
             }
         });
-
+        if (toDos.size() == 0){
+            return null;
+        }
         return toDos;
 
     }
@@ -198,5 +203,4 @@ public class ToDoLab {
         );
         return new ToDoCursorWrapper(cursor);
     }
-
 }
