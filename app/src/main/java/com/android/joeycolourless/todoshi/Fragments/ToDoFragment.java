@@ -92,9 +92,12 @@ public class ToDoFragment extends Fragment implements OnBackPressedListener {
                     }
                 }else {
                     if (mToDo.getTitle().equals("") || mToDo.getTitle() == null) {
-                        //callDeleteWindow(getString(R.string.text_dialog_window_back_button));
-                        ToDoLab.get(getContext()).deleteToDo(mToDo, ToDoTable.NAME, ToDoTable.Cols.UUID);
-                        getActivity().finish();
+                        if (!mToDo.equals(mToDoWithoutChange)){
+                            callDeleteWindow(getString(R.string.text_dialog_window_back_button));
+                        }else {
+                            ToDoLab.get(getContext()).deleteToDo(mToDo, ToDoTable.NAME, ToDoTable.Cols.UUID);
+                            getActivity().finish();
+                        }
                     } else {
                         if (mToDoWithoutChange != null) {
                             if (mToDo.equals(mToDoWithoutChange)) {

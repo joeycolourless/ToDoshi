@@ -28,7 +28,7 @@ public class ToDoListCompletedFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_todo_completed, container, false);
+        View view = inflater.inflate(R.layout.fragment_todo_list_completed, container, false);
         mRecyclerView = (RecyclerView) view.findViewById(R.id.todo_recycler_view_completed);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
