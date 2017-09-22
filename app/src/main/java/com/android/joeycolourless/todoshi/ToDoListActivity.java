@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v4.app.Fragment;
 
 import com.android.joeycolourless.todoshi.Fragments.ToDoFragment;
+import com.android.joeycolourless.todoshi.Fragments.ToDoFragmentCompleted;
 import com.android.joeycolourless.todoshi.Fragments.ToDoListFragment;
 
 /**

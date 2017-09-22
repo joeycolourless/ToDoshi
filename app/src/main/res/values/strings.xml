@@ -42,4 +42,7 @@
     <string name="any_comments">Any comments?</string>
     <string name="search">Search</string>
     <string name="clear">Clear</string>
+    <string name="completed_to">Completed to</string>
+    <string name="text_view_comment">Comment</string>
+    <string name="enter_comment">Enter comment</string>
 </resources>

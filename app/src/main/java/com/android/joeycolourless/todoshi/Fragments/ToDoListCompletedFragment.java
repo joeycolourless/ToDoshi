@@ -1,5 +1,6 @@
 package com.android.joeycolourless.todoshi.Fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -14,6 +15,7 @@ import android.widget.TextView;
 import com.android.joeycolourless.todoshi.R;
 import com.android.joeycolourless.todoshi.ToDo;
 import com.android.joeycolourless.todoshi.ToDoLab;
+import com.android.joeycolourless.todoshi.ToDoPagerActivity;
 import com.android.joeycolourless.todoshi.datebase.ToDODbSchema;
 
 import java.util.List;
@@ -23,6 +25,9 @@ public class ToDoListCompletedFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private TextView mTextView;
     private ToDoAdapter mAdapter;
+
+
+
 
 
     @Nullable
@@ -97,7 +102,16 @@ public class ToDoListCompletedFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
+                if (v.findViewById(R.id.detail_fragment_container) == null) {
+                    Intent intent = ToDoPagerActivity.newIntent(getContext(), mToDo.getId());
+                    startActivity(intent);
+                } else {
+                    Fragment newDetail = ToDoFragmentCompleted.newInstance(mToDo.getId());
 
+                    getFragmentManager().beginTransaction()
+                            .replace(R.id.detail_fragment_container, newDetail)
+                            .commit();
+                }
             }
 
 

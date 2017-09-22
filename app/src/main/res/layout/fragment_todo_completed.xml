@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar_fragment_todo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:elevation="6dp"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+
+    <include
+        android:id="@+id/view_camera_and_title"
+        layout="@layout/view_camera_and_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/toolbar_fragment_todo"
+        />
+    <TextView
+        android:id="@+id/text_view_details_todo_fragment"
+        style="?android:listSeparatorTextViewStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/view_camera_and_title"
+        android:text="@string/todo_details_label"/>
+
+    <EditText
+        android:id="@+id/todo_details"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/text_view_details_todo_fragment"
+        android:hint="@string/todo_detail_hint"
+        android:lines="3"
+        android:linksClickable="false"
+        />
+    <LinearLayout
+        android:id="@+id/linear_date_part"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/todo_details"
+        android:orientation="horizontal"
+        >
+
+        <TextView
+            style="?android:listSeparatorTextViewStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/completed_to"
+
+            />
+
+        <TextView
+            android:id="@+id/text_view_todo_date_completed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_marginLeft="16dp"
+
+            android:layout_marginRight="16dp"
+            android:layout_weight="3"/>
+    </LinearLayout>
+
+
+
+    <EditText
+        android:id="@+id/todo_comment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/linear_date_part"
+        android:hint="@string/enter_comment"
+        android:lines="3"
+        android:linksClickable="false"
+        />
+
+    </RelativeLayout>
