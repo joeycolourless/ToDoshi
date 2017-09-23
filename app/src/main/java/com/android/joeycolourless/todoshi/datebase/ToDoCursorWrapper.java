@@ -49,6 +49,7 @@ public class ToDoCursorWrapper extends CursorWrapper {
         long date = getLong(getColumnIndex(ToDoCompletedTable.Cols.DATE));
         String comments = getString(getColumnIndex(ToDoCompletedTable.Cols.COMMENTS));
         int isFinish = getInt(getColumnIndex(ToDoCompletedTable.Cols.FINISH));
+        int isSuccess = getInt(getColumnIndex(ToDoCompletedTable.Cols.SUCCESS));
 
         ToDo toDo = new ToDo(UUID.fromString(uuidString));
         toDo.setTitle(title);
@@ -56,6 +57,7 @@ public class ToDoCursorWrapper extends CursorWrapper {
         toDo.setDate(new Date(date));
         toDo.setComments(comments);
         toDo.setFinish(isFinish != 0);
+        toDo.setmSuccess(isSuccess != 0);
 
 
         return toDo;

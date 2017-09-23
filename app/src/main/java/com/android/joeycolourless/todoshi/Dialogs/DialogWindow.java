@@ -1,4 +1,4 @@
-package com.android.joeycolourless.todoshi;
+package com.android.joeycolourless.todoshi.Dialogs;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -9,14 +9,22 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 
+import com.android.joeycolourless.todoshi.ToDo;
+import com.android.joeycolourless.todoshi.ToDoLab;
+
+import java.util.UUID;
+
+import static com.android.joeycolourless.todoshi.datebase.ToDODbSchema.ToDoTable;
+
 /**
- * Created by admin on 08.07.2017.
+ * Created by admin on 19.03.2017.
  */
 
-public class DialogWindowIfChanged extends DialogFragment {
-    public static final String EXTRA_BOOLEAN = "com.android.joeycolourless.todoshi.extraboolean";
+public class DialogWindow extends DialogFragment {
 
+    public static final String EXTRA_BOOLEAN = "com.android.joeycolourless.todoshi.boolean";
 
+    private static final String ARG_ID = "id";
     private static final String ARG_TEXT_ID = "text";
 
 
@@ -24,11 +32,12 @@ public class DialogWindowIfChanged extends DialogFragment {
 
 
 
-    public static DialogWindowIfChanged newInstance(String question){
+    public static DialogWindow newInstance(UUID mId, String question){
         Bundle args = new Bundle();
+        args.putSerializable(ARG_ID, mId);
         args.putString(ARG_TEXT_ID, question);
 
-        DialogWindowIfChanged fragment = new DialogWindowIfChanged();
+        DialogWindow fragment = new DialogWindow();
         fragment.setArguments(args);
         return fragment;
     }
@@ -42,15 +51,14 @@ public class DialogWindowIfChanged extends DialogFragment {
                 .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        UUID id = (UUID) getArguments().getSerializable(ARG_ID);
+                        ToDo toDo;
+                        toDo = ToDoLab.get(getActivity()).getTodo(id, ToDoTable.NAME, ToDoTable.Cols.UUID);
+                        ToDoLab.get(getActivity()).deleteToDo(toDo, ToDoTable.NAME, ToDoTable.Cols.UUID);
                         sendResult(Activity.RESULT_OK, true);
                     }
                 })
-                .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        sendResult(Activity.RESULT_CANCELED, true);
-                    }
-                })
+                .setNegativeButton(android.R.string.no, null)
 
                 .create();
 

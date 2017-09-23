@@ -32,6 +32,7 @@ public class ToDODbSchema {
             public static final String DATE = "date";
             public static final String COMMENTS = "comments";
             public static final String FINISH = "finish";
+            public static final String SUCCESS = "success";
         }
     }
 }

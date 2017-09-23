@@ -6,10 +6,15 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.android.joeycolourless.todoshi.R;
@@ -26,14 +31,35 @@ public class ToDoListCompletedFragment extends Fragment {
     private TextView mTextView;
     private ToDoAdapter mAdapter;
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.menu_fragment_list_todo_completed, menu);
+    }
 
-
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.delete_todo:
+                ToDoLab.get(getContext()).deleteAllToDos(ToDODbSchema.ToDoCompletedTable.NAME);
+                updateUI();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_todo_list_completed, container, false);
+
         mRecyclerView = (RecyclerView) view.findViewById(R.id.todo_recycler_view_completed);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
@@ -103,7 +129,7 @@ public class ToDoListCompletedFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 if (v.findViewById(R.id.detail_fragment_container) == null) {
-                    Intent intent = ToDoPagerActivity.newIntent(getContext(), mToDo.getId());
+                    Intent intent = ToDoPagerActivity.newIntent(getContext(), mToDo.getId(), ToDODbSchema.ToDoCompletedTable.NAME);
                     startActivity(intent);
                 } else {
                     Fragment newDetail = ToDoFragmentCompleted.newInstance(mToDo.getId());

@@ -1,4 +1,4 @@
-package com.android.joeycolourless.todoshi;
+package com.android.joeycolourless.todoshi.Dialogs;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -10,18 +10,25 @@ import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 
 /**
- * Created by admin on 12.07.2017.
+ * Created by admin on 08.07.2017.
  */
 
-public class DialogWindowMessageWithFinish extends DialogFragment {
-    public static final String EXTRA_BOOLEAN = "com.android.joeycolourless.todoshi.extra";
+public class DialogWindowIfChanged extends DialogFragment {
+    public static final String EXTRA_BOOLEAN = "com.android.joeycolourless.todoshi.extraboolean";
+
+
     private static final String ARG_TEXT_ID = "text";
 
-    public static DialogWindowMessageWithFinish newInstance(String question){
+
+
+
+
+
+    public static DialogWindowIfChanged newInstance(String question){
         Bundle args = new Bundle();
         args.putString(ARG_TEXT_ID, question);
 
-        DialogWindowMessageWithFinish fragment = new DialogWindowMessageWithFinish();
+        DialogWindowIfChanged fragment = new DialogWindowIfChanged();
         fragment.setArguments(args);
         return fragment;
     }
@@ -46,6 +53,7 @@ public class DialogWindowMessageWithFinish extends DialogFragment {
                 })
 
                 .create();
+
     }
 
     private void sendResult(int resultCode, boolean isOk){

@@ -24,14 +24,13 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 
-import com.android.joeycolourless.todoshi.DialogWindow;
-import com.android.joeycolourless.todoshi.DialogWindowDone;
-import com.android.joeycolourless.todoshi.DialogWindowIfChanged;
-import com.android.joeycolourless.todoshi.DialogWindowMessageWithFinish;
+import com.android.joeycolourless.todoshi.Dialogs.DialogWindow;
+import com.android.joeycolourless.todoshi.Dialogs.DialogWindowDone;
+import com.android.joeycolourless.todoshi.Dialogs.DialogWindowIfChanged;
+import com.android.joeycolourless.todoshi.Dialogs.DialogWindowMessageWithFinish;
 import com.android.joeycolourless.todoshi.R;
 import com.android.joeycolourless.todoshi.ToDo;
 import com.android.joeycolourless.todoshi.ToDoLab;
-import com.android.joeycolourless.todoshi.datebase.ToDODbSchema;
 import com.kunzisoft.switchdatetime.SwitchDateTimeDialogFragment;
 
 import java.text.SimpleDateFormat;
@@ -56,14 +55,14 @@ public class ToDoFragment extends Fragment implements OnBackPressedListener {
     private static final String DIALOG_DELETE_MESSAGE = "DeleteMassage";
     private static final String DIALOG_SAVE_CHANGES = "SaveChanges";
     private static final String DIALOG_MESSAGE_WITH_FINISH = "WithFinish";
-    private static final String DIALOG_MESSAGE_COMMENTS = "DialogComments";
+    private static final String DIALOG_MESSAGE_SUCCESS = "DialogComments";
     private static final String TAG = "TAG";
 
     private static final int REQUEST_DELETE = 0;
     private static final int REQUEST_PHOTO = 1;
     private static final int REQUEST_CHANGED_MESSAGE = 2;
     private static final int REQUEST_MESSAGE_WITH_FINISH = 3;
-    private static final int REQUEST_MESSAGE_COMMENTS = 4;
+    private static final int REQUEST_MESSAGE_SUCCESS = 4;
 
 
     private static List<Integer> listPosition = new ArrayList<>();
@@ -139,11 +138,11 @@ public class ToDoFragment extends Fragment implements OnBackPressedListener {
         dialogWindow.show(manager, DIALOG_SAVE_CHANGES);
     }
 
-    private void commentsMessage(){
+    private void successMessage(){
         FragmentManager manager = getFragmentManager();
         DialogWindowDone dialogWindowDone = DialogWindowDone.newInstance(mToDo);
-        dialogWindowDone.setTargetFragment(ToDoFragment.this, REQUEST_MESSAGE_COMMENTS);
-        dialogWindowDone.show(manager, DIALOG_MESSAGE_COMMENTS);
+        dialogWindowDone.setTargetFragment(ToDoFragment.this, REQUEST_MESSAGE_SUCCESS);
+        dialogWindowDone.show(manager, DIALOG_MESSAGE_SUCCESS);
     }
 
 
@@ -291,6 +290,9 @@ public class ToDoFragment extends Fragment implements OnBackPressedListener {
         });
         toolbar.inflateMenu(R.menu.menu_fragment_todo);
 
+
+
+
         EditText titleField = (EditText) v.findViewById(R.id.todo_title);
         titleField.setText(mToDo.getTitle());
         titleField.addTextChangedListener(new TextWatcher() {
@@ -412,9 +414,9 @@ public class ToDoFragment extends Fragment implements OnBackPressedListener {
         doneButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                updateToDo();
-                doneToDo(mToDo);
-                getActivity().finish();
+                mToDo.setDate(new Date());
+                ToDoLab.get(getContext()).updateToDo(mToDo, ToDoTable.NAME, ToDoTable.Cols.UUID);
+                successMessage();
             }
         });
 
@@ -432,6 +434,7 @@ public class ToDoFragment extends Fragment implements OnBackPressedListener {
                 }else updateToDo();
 
             }
+
             return;
         }
 
@@ -468,12 +471,12 @@ public class ToDoFragment extends Fragment implements OnBackPressedListener {
             updateToDo();
             getActivity().finish();
         }
+        if (requestCode == REQUEST_MESSAGE_SUCCESS){
+            getActivity().finish();
+        }
     }
 
-    private void doneToDo(ToDo toDo){
-        ToDoLab.get(getActivity()).addToDo(toDo, ToDODbSchema.ToDoCompletedTable.NAME);
-        ToDoLab.get(getActivity()).deleteToDo(toDo, ToDoTable.NAME, ToDoTable.Cols.UUID);
-    }
+
 
     private void updateToDo(){
         try {

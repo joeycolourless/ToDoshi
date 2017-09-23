@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import com.android.joeycolourless.todoshi.Fragments.ToDoFragment;
 import com.android.joeycolourless.todoshi.Fragments.ToDoFragmentCompleted;
 import com.android.joeycolourless.todoshi.Fragments.ToDoListFragment;
+import com.android.joeycolourless.todoshi.datebase.ToDODbSchema;
 
 /**
  * Created by admin on 13.03.2017.
@@ -29,7 +30,7 @@ public class ToDoListActivity extends SingleFragmentActivity implements ToDoList
     @Override
     public void onToDoSelected(ToDo toDo) {
         if (findViewById(R.id.detail_fragment_container) == null) {
-            Intent intent = ToDoPagerActivity.newIntent(this, toDo.getId());
+            Intent intent = ToDoPagerActivity.newIntent(this, toDo.getId(), ToDODbSchema.ToDoTable.NAME);
             startActivity(intent);
         } else {
             Fragment newDetail = ToDoFragment.newInstance(toDo.getId());

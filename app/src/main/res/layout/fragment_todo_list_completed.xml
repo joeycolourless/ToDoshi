@@ -10,13 +10,15 @@
                                         android:id="@+id/todo_recycler_view_completed"
                                         android:layout_width="match_parent"
                                         android:layout_height="match_parent"/>
+
     <TextView
         android:id="@+id/text_view_todo_fragment_completed_label"
-        android:text="@string/todo_fragment_hint_text_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:text="@string/todo_fragment_hint_text_view"
+        android:textAlignment="center"
         android:textSize="25dp"
-        android:visibility="visible"/>
+        android:visibility="visible" />
 </FrameLayout>
 

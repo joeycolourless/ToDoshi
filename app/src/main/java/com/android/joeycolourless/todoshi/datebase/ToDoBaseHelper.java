@@ -41,6 +41,7 @@ public class ToDoBaseHelper extends SQLiteOpenHelper {
                 ToDoCompletedTable.Cols.DETAILS + ", " +
                 ToDoCompletedTable.Cols.DATE + ", " +
                 ToDoCompletedTable.Cols.FINISH + ", " +
+                ToDoCompletedTable.Cols.SUCCESS + ", " +
                 ToDoCompletedTable.Cols.COMMENTS +
                    ")"
         );

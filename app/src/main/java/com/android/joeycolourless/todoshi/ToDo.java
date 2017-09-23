@@ -17,6 +17,7 @@ public class ToDo implements Cloneable{
     private boolean mPriority;
     private boolean mFinish;
     private boolean mNotification;
+    private boolean mSuccess;
 
     public boolean isNotification() {
         return mNotification;
@@ -40,21 +41,7 @@ public class ToDo implements Cloneable{
         mNotificationDate = null;
         mFinish = false;
         mNotification = false;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = mId != null ? mId.hashCode() : 0;
-        result = 31 * result + (mTitle != null ? mTitle.hashCode() : 0);
-        result = 31 * result + (mDetails != null ? mDetails.hashCode() : 0);
-        result = 31 * result + (mDate != null ? mDate.hashCode() : 0);
-        result = 31 * result + (mNotificationDate != null ? mNotificationDate.hashCode() : 0);
-        result = 31 * result + (mPriority ? 1 : 0);
-        result = 31 * result + (mFinish ? 1 : 0);
-        result = 31 * result + (mNotification ? 1 : 0);
-        result = 31 * result + mPosition;
-        result = 31 * result + (mComments != null ? mComments.hashCode() : 0);
-        return result;
+        mSuccess = false;
     }
 
     @Override
@@ -67,6 +54,7 @@ public class ToDo implements Cloneable{
         if (mPriority != toDo.mPriority) return false;
         if (mFinish != toDo.mFinish) return false;
         if (mNotification != toDo.mNotification) return false;
+        if (mSuccess != toDo.mSuccess) return false;
         if (mPosition != toDo.mPosition) return false;
         if (mId != null ? !mId.equals(toDo.mId) : toDo.mId != null) return false;
         if (mTitle != null ? !mTitle.equals(toDo.mTitle) : toDo.mTitle != null) return false;
@@ -77,6 +65,22 @@ public class ToDo implements Cloneable{
             return false;
         return mComments != null ? mComments.equals(toDo.mComments) : toDo.mComments == null;
 
+    }
+
+    @Override
+    public int hashCode() {
+        int result = mId != null ? mId.hashCode() : 0;
+        result = 31 * result + (mTitle != null ? mTitle.hashCode() : 0);
+        result = 31 * result + (mDetails != null ? mDetails.hashCode() : 0);
+        result = 31 * result + (mDate != null ? mDate.hashCode() : 0);
+        result = 31 * result + (mNotificationDate != null ? mNotificationDate.hashCode() : 0);
+        result = 31 * result + (mPriority ? 1 : 0);
+        result = 31 * result + (mFinish ? 1 : 0);
+        result = 31 * result + (mNotification ? 1 : 0);
+        result = 31 * result + (mSuccess ? 1 : 0);
+        result = 31 * result + mPosition;
+        result = 31 * result + (mComments != null ? mComments.hashCode() : 0);
+        return result;
     }
 
     @Override
@@ -154,5 +158,13 @@ public class ToDo implements Cloneable{
 
     public void setFinish(boolean finish) {
         mFinish = finish;
+    }
+
+    public boolean ismSuccess() {
+        return mSuccess;
+    }
+
+    public void setmSuccess(boolean mSuccess) {
+        this.mSuccess = mSuccess;
     }
 }

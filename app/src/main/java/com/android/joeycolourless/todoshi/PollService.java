@@ -66,7 +66,7 @@ public class PollService extends IntentService {
                 long time = toDo.getNotificationDate().getTime() - new Date().getTime();
                 if (time < TIME_DIFFERENCE && time > 0 && toDo.isNotification()) {
 
-                    Intent notificationIntent = ToDoPagerActivity.newIntent(this, toDo.getId());
+                    Intent notificationIntent = ToDoPagerActivity.newIntent(this, toDo.getId(), ToDODbSchema.ToDoTable.NAME);
                     PendingIntent contentIntent = PendingIntent.getActivity(context,
                             0, notificationIntent,
                             PendingIntent.FLAG_CANCEL_CURRENT);

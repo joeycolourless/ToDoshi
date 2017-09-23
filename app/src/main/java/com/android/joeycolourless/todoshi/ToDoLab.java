@@ -98,6 +98,10 @@ public class ToDoLab {
         mDateBase.delete(tableName, UUID + " = ?" , new String[]{toDo.getId().toString()});
     }
 
+    public void deleteAllToDos(String tableName){
+        mDateBase.delete(tableName, null, null);
+    }
+
     public ToDo getTodo(UUID id, String tableName, String uuid){
         ToDoCursorWrapper cursorWrapper = queryToDos(tableName, uuid + " = ?",
                 new String[]{ id.toString()}

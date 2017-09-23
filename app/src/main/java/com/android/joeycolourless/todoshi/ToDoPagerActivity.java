@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.android.joeycolourless.todoshi.Fragments.OnBackPressedListener;
 import com.android.joeycolourless.todoshi.Fragments.ToDoFragment;
+import com.android.joeycolourless.todoshi.Fragments.ToDoFragmentCompleted;
 import com.android.joeycolourless.todoshi.datebase.ToDODbSchema;
 
 import java.util.List;
@@ -23,13 +24,15 @@ import java.util.UUID;
 
 public class ToDoPagerActivity extends AppCompatActivity implements ToDoFragment.Callbacks {
     private static final String EXTRA_TODO_ID = "com.android.joeycolourless.todoshi.todo_id";
+    private static final String EXTRA_TODO_TABLE = "com.android.joeycolourless.todoshi.table";
 
     private ViewPager mViewPager;
     private List<ToDo> mToDos;
 
-    public static Intent newIntent (Context packageContext, UUID toDoId){
+    public static Intent newIntent (Context packageContext, UUID toDoId, String table){
         Intent intent = new Intent(packageContext, ToDoPagerActivity.class);
         intent.putExtra(EXTRA_TODO_ID, toDoId);
+        intent.putExtra(EXTRA_TODO_TABLE, table);
         return intent;
     }
 
@@ -38,30 +41,43 @@ public class ToDoPagerActivity extends AppCompatActivity implements ToDoFragment
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_todo_pager);
 
-        UUID toDoId = (UUID) getIntent().getSerializableExtra(EXTRA_TODO_ID);
+        final UUID toDoId = (UUID) getIntent().getSerializableExtra(EXTRA_TODO_ID);
+        final String table = getIntent().getStringExtra(EXTRA_TODO_TABLE);
 
-        mViewPager = (ViewPager)findViewById(R.id.activity_todo_pager_view_pager);
+        mViewPager = (ViewPager) findViewById(R.id.activity_todo_pager_view_pager);
 
-        mToDos = ToDoLab.get(this).getToDos(ToDODbSchema.ToDoTable.NAME);
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        mViewPager.setAdapter(new FragmentStatePagerAdapter(fragmentManager) {
-            @Override
-            public Fragment getItem(int position) {
-                ToDo toDo = mToDos.get(position);
-                return ToDoFragment.newInstance(toDo.getId());
+
+
+
+
+
+
+            mToDos = ToDoLab.get(this).getToDos(table);
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            mViewPager.setAdapter(new FragmentStatePagerAdapter(fragmentManager) {
+                @Override
+                public Fragment getItem(int position) {
+                    ToDo toDo = mToDos.get(position);
+                    if (table.equals(ToDODbSchema.ToDoTable.NAME)){
+                        return ToDoFragment.newInstance(toDo.getId());
+                    }else {
+                        return ToDoFragmentCompleted.newInstance(toDo.getId());
+                    }
+
+                }
+
+                @Override
+                public int getCount() {
+                    return mToDos.size();
+                }
+            });
+            for (int i = 0; i < mToDos.size(); i++) {
+                if (mToDos.get(i).getId().equals(toDoId)) {
+                    mViewPager.setCurrentItem(i);
+                    break;
+                }
             }
 
-            @Override
-            public int getCount() {
-                return mToDos.size();
-            }
-        });
-        for (int i = 0; i < mToDos.size(); i++){
-            if (mToDos.get(i).getId().equals(toDoId)){
-                mViewPager.setCurrentItem(i);
-                break;
-            }
-        }
     }
 
 
