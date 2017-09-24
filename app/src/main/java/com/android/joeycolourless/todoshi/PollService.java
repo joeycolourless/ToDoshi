@@ -24,7 +24,7 @@ public class PollService extends IntentService {
     private static final String TAG = "PollService";
     private static final String TAG1 = "PollService1";
     private static final int NOTIFY_ID = 101;
-    private static final int POLL_INTERVAL = 1000 * 60; //60 seconds
+    private static final int POLL_INTERVAL = 5000 * 60; //60 seconds
     private static final int TIME_DIFFERENCE = 15000 * 60; // 15 minutes
     public static final String ACTION_SHOW_NOTIFICATION = "com.android.joeycolourless.todoshi.SHOW_NOTIFICATION";
 
