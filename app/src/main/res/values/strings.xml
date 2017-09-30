@@ -47,4 +47,11 @@
     <string name="enter_comment">Enter comment</string>
     <string name="no_date">No date</string>
     <string name="delete_all">Delete all?</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="sign_in">Sign in</string>
+    <string name="sign_up">Sign up</string>
+    <string name="guest">Guest</string>
+    <string name="auth_success">Authorization is successful</string>
+    <string name="auth_failed">Authorization is unsuccessful</string>
 </resources>

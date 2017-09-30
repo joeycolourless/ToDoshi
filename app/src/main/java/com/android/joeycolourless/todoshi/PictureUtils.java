@@ -19,7 +19,7 @@ public class PictureUtils {
     }
 
     public static Bitmap getScaleBitmap(String path, int destWidth, int destHeight){
-        //Читання розмірів зображення на диску
+        //Read size of image on the disk
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
         BitmapFactory.decodeFile(path, options);
@@ -27,7 +27,7 @@ public class PictureUtils {
         float srcWidth = options.outWidth;
         float srcHeight = options.outHeight;
 
-        //Рорахунок ступеню маштабування
+        //Scale calculation
         int inSampleSize = 1;
         if (srcHeight > destHeight || srcWidth > destWidth){
             if (srcWidth > srcHeight){
@@ -40,7 +40,7 @@ public class PictureUtils {
         options = new BitmapFactory.Options();
         options.inSampleSize = inSampleSize;
 
-        //Читання даних і створення кінцевого зображення
+        //Read data and creating final image
         return BitmapFactory.decodeFile(path, options);
     }
 }

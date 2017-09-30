@@ -1,13 +1,21 @@
 package com.android.joeycolourless.todoshi;
 
+import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Environment;
+import android.support.annotation.NonNull;
+import android.widget.Toast;
 
 import com.android.joeycolourless.todoshi.datebase.ToDoBaseHelper;
 import com.android.joeycolourless.todoshi.datebase.ToDoCursorWrapper;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -15,6 +23,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.Executor;
 
 import static com.android.joeycolourless.todoshi.datebase.ToDODbSchema.ToDoCompletedTable;
 import static com.android.joeycolourless.todoshi.datebase.ToDODbSchema.ToDoTable;
@@ -27,6 +36,9 @@ public class ToDoLab {
 
     private Context mContext;
     private SQLiteDatabase mDateBase;
+
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private FirebaseAuth.AuthStateListener mAuthListener;
 
 
     public static ToDoLab get(Context context){
@@ -198,7 +210,7 @@ public class ToDoLab {
    private ToDoCursorWrapper queryToDos(String tableName, String whereClause, String[] whereArgs){
         Cursor cursor = mDateBase.query(
                 tableName,
-                null, // Columns - null вибирає всі стовпці
+                null, // Columns - null takes all columns
                 whereClause,
                 whereArgs,
                 null, // groupBy
@@ -206,5 +218,44 @@ public class ToDoLab {
                 null // orderBy
         );
         return new ToDoCursorWrapper(cursor);
+    }
+
+    public FirebaseAuth signUpUser(String email, String password, Activity activity){
+        mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(activity, new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isComplete()){
+                    Toast.makeText(mContext, R.string.auth_success,
+                            Toast.LENGTH_SHORT).show();
+                }else
+                    Toast.makeText(mContext, R.string.auth_failed, Toast.LENGTH_SHORT).show();
+            }
+        });
+        return mAuth;
+    }
+
+    public FirebaseAuth signInUser(String email, String password, Activity activity){
+        mAuth.signInWithEmailAndPassword(email, password)
+                .addOnCompleteListener(activity, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+
+
+                        // If sign in fails, display a message to the user. If sign in succeeds
+                        // the auth state listener will be notified and logic to handle the
+                        // signed in user can be handled in the listener.
+                        if (!task.isSuccessful()) {
+
+                            Toast.makeText(mContext, R.string.auth_failed,
+                                    Toast.LENGTH_SHORT).show();
+                        }else {
+                            Toast.makeText(mContext, R.string.auth_success,
+                                    Toast.LENGTH_SHORT).show();
+                        }
+
+                        // ...
+                    }
+                });
+        return mAuth;
     }
 }

@@ -1,13 +1,17 @@
 package com.android.joeycolourless.todoshi;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.widget.Toast;
+
+import com.android.joeycolourless.todoshi.Fragments.AuthFragment;
 
 /**
  * Created by admin on 13.03.2017.
@@ -27,11 +31,18 @@ public abstract class SingleFragmentActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_fragment);
+        setContentView(R.layout.activity_container);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_activity_container);
         setSupportActionBar(toolbar);
-        initTab();
-
+        //initTab();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        Fragment fragment = fragmentManager.findFragmentById(R.id.activity_container);
+        if (fragment == null) {
+            fragment = new AuthFragment();
+            fragmentManager.beginTransaction()
+                    .add(R.id.activity_container, fragment)
+                    .commit();
+        }
         /*FragmentManager fm = getSupportFragmentManager();
         Fragment fragment = fm.findFragmentById(R.id.fragment_container);
 

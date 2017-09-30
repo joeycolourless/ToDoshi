@@ -352,7 +352,7 @@ public class ToDoFragment extends Fragment implements OnBackPressedListener {
         priorityCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                //Дія після застосування checkbox
+                //Action after changed checkBox
                 mToDo.setPriority(isChecked);
 
             }

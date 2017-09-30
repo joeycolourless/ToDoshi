@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <TextView
+        android:id="@+id/textView_email_auth_fragment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/email"
+        tools:layout_editor_absoluteX="175dp"
+        tools:layout_editor_absoluteY="161dp"
+        android:layout_above="@+id/editText_email_auth_fragment"
+        android:layout_centerHorizontal="true" />
+
+    <EditText
+        android:id="@+id/editText_email_auth_fragment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textEmailAddress"
+        tools:layout_editor_absoluteX="85dp"
+        tools:layout_editor_absoluteY="178dp"
+        android:layout_above="@+id/textView_password_auth_fragment"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:id="@+id/textView_password_auth_fragment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/password"
+        tools:layout_editor_absoluteX="161dp"
+        tools:layout_editor_absoluteY="245dp"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
+
+    <EditText
+        android:id="@+id/editText_password_auth_fragment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPassword"
+        tools:layout_editor_absoluteX="85dp"
+        tools:layout_editor_absoluteY="262dp"
+        android:layout_below="@+id/textView_password_auth_fragment"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:id="@+id/button_signIn_auth_fragment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/sign_in"
+        tools:layout_editor_absoluteX="84dp"
+        tools:layout_editor_absoluteY="469dp"
+        android:layout_marginBottom="60dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignRight="@+id/textView_email_auth_fragment"
+        android:layout_alignEnd="@+id/textView_email_auth_fragment"
+        android:layout_marginRight="15dp"
+        android:layout_marginEnd="15dp" />
+
+    <Button
+        android:id="@+id/button_signUp_auth_fragment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/sign_up"
+        tools:layout_editor_absoluteX="211dp"
+        tools:layout_editor_absoluteY="469dp"
+        android:layout_alignBaseline="@+id/button_signIn_auth_fragment"
+        android:layout_alignBottom="@+id/button_signIn_auth_fragment"
+        android:layout_alignLeft="@+id/textView_email_auth_fragment"
+        android:layout_alignStart="@+id/textView_email_auth_fragment"
+        android:layout_marginLeft="17dp"
+        android:layout_marginStart="17dp" />
+
+    <Button
+        android:id="@+id/button_guest_auth_fragment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/guest"
+        tools:layout_editor_absoluteX="146dp"
+        tools:layout_editor_absoluteY="517dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
+
+</RelativeLayout>

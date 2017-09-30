@@ -76,13 +76,14 @@ public class ToDoListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_todo_list, container, false);
 
-        mToDoRecyclerView = (RecyclerView) view.findViewById(R.id.todo_recycler_view);
-        //Обов'язково потрібно назначити LayoutManager для RecyclerView, він займається розміщенням елементів
+        mToDoRecyclerView = view.findViewById(R.id.todo_recycler_view);
+
+        //Necessarily set layoutManager for RecyclerView
         mToDoRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        mTextView = (TextView) view.findViewById(R.id.fragment_todo_list_text_view);
+        mTextView = view.findViewById(R.id.fragment_todo_list_text_view);
 
-        FloatingActionButton floatingActionButton = (FloatingActionButton) view.findViewById(R.id.floatingActionButton);
+        FloatingActionButton floatingActionButton =  view.findViewById(R.id.floatingActionButton);
         floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
