@@ -1,5 +1,8 @@
 package com.android.joeycolourless.todoshi.Fragments;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -10,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.android.joeycolourless.todoshi.R;
 import com.android.joeycolourless.todoshi.ToDoLab;
@@ -25,6 +29,9 @@ import java.util.UUID;
 public class AuthFragment extends Fragment {
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
+
+    private Button signInButton;
+    private Button signUpButton;
 
     public static AuthFragment newInstance(){
 
@@ -70,25 +77,51 @@ public class AuthFragment extends Fragment {
 
         final EditText password = view.findViewById(R.id.editText_password_auth_fragment);
 
-        Button signInButton = view.findViewById(R.id.button_signIn_auth_fragment);
+        signInButton = view.findViewById(R.id.button_signIn_auth_fragment);
         signInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mAuth = ToDoLab.get(getContext()).signInUser(email.getText().toString(), password.getText().toString(), getActivity());
+                try {
+                    if ( email.getText().toString().equals("") || password.getText().toString().equals("")){
+                        errorMassage(getString(R.string.one_of_the_field_empty));
+                    }else{
+                        mAuth = ToDoLab.get(getContext()).signInUser(email.getText().toString(), password.getText().toString(), getActivity());
+                    }
+
+
+                } catch (Exception e) {
+                    errorMassage(getString(R.string.something_wrong_maybe_internet));
+                    enableButtons(getContext());
+                }
             }
         });
 
-        Button signUpButton = view.findViewById(R.id.button_signUp_auth_fragment);
+        signUpButton = view.findViewById(R.id.button_signUp_auth_fragment);
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mAuth = ToDoLab.get(getContext()).signUpUser(email.getText().toString(), password.getText().toString(), getActivity());
+                try {
+                    mAuth = ToDoLab.get(getContext()).signUpUser(email.getText().toString(), password.getText().toString(), getActivity());
+                }catch (Exception e){
+                    errorMassage(getString(R.string.something_wrong_maybe_internet));
+                    enableButtons(getContext());
+                }
             }
         });
+
+        enableButtons(getContext());
 
 
 
         return view;
+    }
+
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        enableButtons(getContext());
     }
 
     @Override
@@ -97,5 +130,26 @@ public class AuthFragment extends Fragment {
         if (mAuthListener != null){
             mAuth.removeAuthStateListener(mAuthListener);
         }
+    }
+
+    private boolean isOnline(Context context)
+    {
+        ConnectivityManager cm =
+                (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        return netInfo != null && netInfo.isConnectedOrConnecting();
+    }
+
+    private void enableButtons(Context context){
+        if (!isOnline(context)){
+            signInButton.setEnabled(false);
+            signUpButton.setEnabled(false);
+        }else {
+            signInButton.setEnabled(true);
+            signUpButton.setEnabled(true);
+        }
+    }
+    private void errorMassage(String text){
+        Toast.makeText(getContext(), text, Toast.LENGTH_SHORT).show();
     }
 }
