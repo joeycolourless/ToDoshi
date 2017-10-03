@@ -56,4 +56,6 @@
     <string name="auth_failed">Authorization is unsuccessful</string>
     <string name="something_wrong_maybe_internet">Something wrong, maybe internet</string>
     <string name="one_of_the_field_empty">One of the fields empty</string>
+    <string name="facebook_app_id">120073335327237</string>
+    <string name="fb_login_protocol_scheme">fb120073335327237</string>
 </resources>

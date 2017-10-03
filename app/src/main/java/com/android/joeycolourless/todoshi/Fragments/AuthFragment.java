@@ -73,11 +73,11 @@ public class AuthFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.auth_fragment, container, false);
 
-        final EditText email = view.findViewById(R.id.editText_email_auth_fragment);
+        final EditText email = (EditText) view.findViewById(R.id.editText_email_auth_fragment);
 
-        final EditText password = view.findViewById(R.id.editText_password_auth_fragment);
+        final EditText password = (EditText) view.findViewById(R.id.editText_password_auth_fragment);
 
-        signInButton = view.findViewById(R.id.button_signIn_auth_fragment);
+        signInButton = (Button) view.findViewById(R.id.button_signIn_auth_fragment);
         signInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -96,7 +96,7 @@ public class AuthFragment extends Fragment {
             }
         });
 
-        signUpButton = view.findViewById(R.id.button_signUp_auth_fragment);
+        signUpButton = (Button) view.findViewById(R.id.button_signUp_auth_fragment);
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
