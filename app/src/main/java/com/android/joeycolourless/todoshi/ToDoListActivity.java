@@ -52,11 +52,7 @@ public class ToDoListActivity extends SingleFragmentActivity implements ToDoList
 
     @Override
     public boolean isTablet() {
-        if (findViewById(R.id.detail_fragment_container) == null){
-            return false;
-    }else{
-        return true;
-    }
+        return findViewById(R.id.detail_fragment_container) != null;
     }
 
 

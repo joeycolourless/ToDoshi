@@ -21,9 +21,10 @@
         <com.facebook.login.widget.LoginButton
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
+            android:layout_marginBottom="30dp"
             android:layout_marginTop="30dp"
-            android:layout_marginBottom="30dp"/>
+            android:layout_weight="1"
+            android:enabled="false" />
     </LinearLayout>
 
     <TextView

@@ -58,4 +58,5 @@
     <string name="one_of_the_field_empty">One of the fields empty</string>
     <string name="facebook_app_id">120073335327237</string>
     <string name="fb_login_protocol_scheme">fb120073335327237</string>
+    <string name="logout">LogOut</string>
 </resources>

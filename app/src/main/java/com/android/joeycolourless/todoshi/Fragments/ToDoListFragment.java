@@ -1,6 +1,7 @@
 package com.android.joeycolourless.todoshi.Fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -21,9 +22,11 @@ import android.widget.TextView;
 
 import com.android.joeycolourless.todoshi.PollService;
 import com.android.joeycolourless.todoshi.R;
+import com.android.joeycolourless.todoshi.StartActivity;
 import com.android.joeycolourless.todoshi.ToDo;
 import com.android.joeycolourless.todoshi.ToDoLab;
 import com.android.joeycolourless.todoshi.datebase.ToDODbSchema;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -50,6 +53,7 @@ public class ToDoListFragment extends Fragment {
     private TextView mTextView;
     private Callbacks mCallbacks;
     private List<ToDo> mToDos = new ArrayList<>();
+    private FirebaseAuth mAuth;
 
 
     public interface Callbacks{
@@ -80,6 +84,8 @@ public class ToDoListFragment extends Fragment {
 
         //Necessarily set layoutManager for RecyclerView
         mToDoRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+
+        mAuth = FirebaseAuth.getInstance();
 
         mTextView = (TextView) view.findViewById(R.id.fragment_todo_list_text_view);
 
@@ -171,6 +177,11 @@ public class ToDoListFragment extends Fragment {
                 getActivity().invalidateOptionsMenu();
                 updateSubtitle();
                 return true;
+            case R.id.menu_item_logout:
+                mAuth.signOut();
+                Intent intent = new Intent(getContext(), StartActivity.class);
+                startActivity(intent);
+
             default:
                 return super.onOptionsItemSelected(item);
         }

@@ -1,6 +1,7 @@
 package com.android.joeycolourless.todoshi.Fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -16,7 +17,10 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.android.joeycolourless.todoshi.R;
+import com.android.joeycolourless.todoshi.SingleFragmentActivity;
+import com.android.joeycolourless.todoshi.StartActivity;
 import com.android.joeycolourless.todoshi.ToDoLab;
+import com.android.joeycolourless.todoshi.ToDoListActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -32,6 +36,7 @@ public class AuthFragment extends Fragment {
 
     private Button signInButton;
     private Button signUpButton;
+    private Button guestButton;
 
     public static AuthFragment newInstance(){
 
@@ -58,6 +63,8 @@ public class AuthFragment extends Fragment {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
                     // User is signed in
+                    Intent intent = new Intent(getContext(), ToDoListActivity.class);
+                    startActivity(intent);
 
                 } else {
                     // User is signed out
@@ -106,6 +113,16 @@ public class AuthFragment extends Fragment {
                     errorMassage(getString(R.string.something_wrong_maybe_internet));
                     enableButtons(getContext());
                 }
+            }
+        });
+
+        guestButton = (Button) view.findViewById(R.id.button_guest_auth_fragment);
+        guestButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), ToDoListActivity.class);
+                startActivity(intent);
+
             }
         });
 

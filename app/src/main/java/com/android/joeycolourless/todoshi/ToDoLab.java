@@ -221,6 +221,7 @@ public class ToDoLab {
     }
 
     public FirebaseAuth signUpUser(String email, String password, Activity activity){
+
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(activity, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
