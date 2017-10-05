@@ -179,9 +179,7 @@ public class ToDoListFragment extends Fragment {
                 return true;
             case R.id.menu_item_logout:
                 mAuth.signOut();
-                Intent intent = new Intent(getContext(), StartActivity.class);
-                startActivity(intent);
-
+                getActivity().finish();
             default:
                 return super.onOptionsItemSelected(item);
         }
