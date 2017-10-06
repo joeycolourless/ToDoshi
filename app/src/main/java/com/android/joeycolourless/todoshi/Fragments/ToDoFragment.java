@@ -289,7 +289,11 @@ public class ToDoFragment extends Fragment implements OnBackPressedListener {
             }
         });
         toolbar.inflateMenu(R.menu.menu_fragment_todo);
-
+        Menu menu = toolbar.getMenu();
+        MenuItem shareItem = menu.findItem(R.id.share_todo);
+        if (mToDo.getTitle().equals("")){
+            shareItem.setVisible(false);
+        }else shareItem.setVisible(true);
 
 
 
