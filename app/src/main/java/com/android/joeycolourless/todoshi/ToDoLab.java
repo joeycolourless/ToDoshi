@@ -7,6 +7,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Environment;
 import android.support.annotation.NonNull;
+import android.telephony.PhoneNumberUtils;
 import android.widget.Toast;
 
 import com.android.joeycolourless.todoshi.datebase.ToDoBaseHelper;
@@ -16,6 +17,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -40,6 +46,10 @@ public class ToDoLab {
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private FirebaseAuth.AuthStateListener mAuthListener;
 
+    private DatabaseReference mFirebaseDatebaseRef;
+
+    List<ToDo> list = new ArrayList<>();
+
 
     public static ToDoLab get(Context context){
         if (sToDoLab == null){
@@ -53,6 +63,7 @@ public class ToDoLab {
         mDateBase = new ToDoBaseHelper(mContext)
                 .getWritableDatabase();
 
+
     }
 
     public void addToDo(ToDo toDo, String tableName){
@@ -65,9 +76,15 @@ public class ToDoLab {
         mDateBase.insert(tableName, null, values);
     }
 
+    public void firebaseAddToDO(ToDo toDo, String tableName){
+        mFirebaseDatebaseRef = FirebaseDatabase.getInstance().getReference(mAuth.getCurrentUser().getUid());
+        mFirebaseDatebaseRef.child(tableName).child(toDo.getIdFireBase()).setValue(toDo);
+    }
+
     private ContentValues getContentValuesForCompletedToDo(ToDo toDo) {
         ContentValues values = new ContentValues();
         values.put(ToDoCompletedTable.Cols.UUID, toDo.getId().toString());
+        values.put(ToDoCompletedTable.Cols.IDFB, toDo.getIdFireBase());
         values.put(ToDoCompletedTable.Cols.TITLE, toDo.getTitle());
         values.put(ToDoCompletedTable.Cols.DETAILS, toDo.getDetails());
         values.put(ToDoCompletedTable.Cols.DATE, toDo.getDate().getTime());
@@ -135,6 +152,12 @@ public class ToDoLab {
         }
     }
 
+    public ToDo getToDoFireBase(ToDo toDo, String tableName){
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference(mAuth.getCurrentUser().getUid()).child(tableName).child(toDo.getIdFireBase());
+
+        return toDo;
+    }
+
     public List<ToDo> getToDosSearch(String searchTerm, String tableName){
         List<ToDo> toDos = new ArrayList<>();
         String[] title = new String[2];
@@ -168,14 +191,7 @@ public class ToDoLab {
 
     }
 
-    public File getPhotoFile(ToDo toDo){
-        File externalFilesDir = mContext.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
 
-        if (externalFilesDir == null){
-            return null;
-        }
-        return new File(externalFilesDir, toDo.getPhotoFilename());
-    }
 
     public void updateToDo(ToDo toDo, String tableName, String uuid){
         String uuidString = toDo.getId().toString();
@@ -190,9 +206,19 @@ public class ToDoLab {
         mDateBase.update(tableName, values, uuid + " = ?", new String[]{ uuidString});
     }
 
+    public void updateToDoFireBase(final String tableName, final ToDo toDo, FirebaseUser user){
+        DatabaseReference reference;
+        reference = FirebaseDatabase.getInstance().getReference(user.getUid()).child(tableName).child(toDo.getIdFireBase());
+        reference.setValue(toDo);
+    }
+
+
+
+
     private static ContentValues getContentValues(ToDo toDo){
         ContentValues values = new ContentValues();
         values.put(ToDoTable.Cols.UUID, toDo.getId().toString());
+        values.put(ToDoTable.Cols.IDFB, toDo.getIdFireBase());
         values.put(ToDoTable.Cols.TITLE, toDo.getTitle());
         values.put(ToDoTable.Cols.DETAILS, toDo.getDetails());
         values.put(ToDoTable.Cols.DATE, toDo.getDate().getTime());

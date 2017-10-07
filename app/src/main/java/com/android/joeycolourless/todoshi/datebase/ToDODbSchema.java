@@ -10,6 +10,7 @@ public class ToDODbSchema {
 
         public static final class Cols{
             public static final String UUID = "uuid";
+            public static final String IDFB = "idfb";
             public static final String TITLE = "title";
             public static final String DETAILS = "details";
             public static final String DATE = "date";
@@ -27,6 +28,7 @@ public class ToDODbSchema {
 
         public static final class Cols{
             public static final String UUID = "uuid";
+            public static final String IDFB = "idfb";
             public static final String TITLE = "title";
             public static final String DETAILS = "details";
             public static final String DATE = "date";

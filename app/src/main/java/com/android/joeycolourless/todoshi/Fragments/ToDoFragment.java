@@ -31,6 +31,7 @@ import com.android.joeycolourless.todoshi.Dialogs.DialogWindowMessageWithFinish;
 import com.android.joeycolourless.todoshi.R;
 import com.android.joeycolourless.todoshi.ToDo;
 import com.android.joeycolourless.todoshi.ToDoLab;
+import com.google.firebase.auth.FirebaseAuth;
 import com.kunzisoft.switchdatetime.SwitchDateTimeDialogFragment;
 
 import java.text.SimpleDateFormat;
@@ -74,6 +75,7 @@ public class ToDoFragment extends Fragment implements OnBackPressedListener {
     private ToDo mToDoWithoutChange;
     private Button mDateButton;
     private Callbacks mCallbacks;
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
     @Override
     public void onBackPressed() {
@@ -495,6 +497,7 @@ public class ToDoFragment extends Fragment implements OnBackPressedListener {
             callDeleteWindow(getString(R.string.text_dialog_window_back_button));
         }
 
+        ToDoLab.get(getContext()).updateToDoFireBase(ToDoTable.NAME, mToDo, mAuth.getCurrentUser());
 
 
 
