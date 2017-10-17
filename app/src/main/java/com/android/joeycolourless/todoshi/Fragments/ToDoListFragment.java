@@ -26,13 +26,7 @@ import com.android.joeycolourless.todoshi.StartActivity;
 import com.android.joeycolourless.todoshi.ToDo;
 import com.android.joeycolourless.todoshi.ToDoLab;
 import com.android.joeycolourless.todoshi.datebase.ToDODbSchema;
-import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -49,21 +43,17 @@ import static com.android.joeycolourless.todoshi.datebase.ToDODbSchema.ToDoTable
 public class ToDoListFragment extends Fragment {
 
     private static final String TAG = "tag";
-    public static List<ToDo> mToDos = new ArrayList<>();
 
     private static final String SAVED_SUBTITLE_VISIBLE = "subtitle";
 
 
     private RecyclerView mToDoRecyclerView;
-    //private ToDoAdapter mAdapter;
+    private ToDoAdapter mAdapter;
     private boolean mSubtitleVisible;
     private TextView mTextView;
     private Callbacks mCallbacks;
-
+    private List<ToDo> mToDos = new ArrayList<>();
     private FirebaseAuth mAuth;
-    private DatabaseReference mReference;
-    private FirebaseRecyclerAdapter<ToDo, ToDoHolder> mAdapter;
-
 
 
     public interface Callbacks{
@@ -95,23 +85,7 @@ public class ToDoListFragment extends Fragment {
         //Necessarily set layoutManager for RecyclerView
         mToDoRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-
-
         mAuth = FirebaseAuth.getInstance();
-        mReference = FirebaseDatabase.getInstance().getReference().child(mAuth.getCurrentUser().getUid()).child(ToDoTable.NAME);
-        mReference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
-                    mToDos.add(snapshot.getValue(ToDo.class));
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
 
         mTextView = (TextView) view.findViewById(R.id.fragment_todo_list_text_view);
 
@@ -121,8 +95,12 @@ public class ToDoListFragment extends Fragment {
             public void onClick(View v) {
                 ToDo toDo = new ToDo();
 
+<<<<<<< HEAD
 
                 //ToDoLab.get(getActivity()).addToDo(toDo, ToDoTable.NAME);
+=======
+                ToDoLab.get(getActivity()).addToDo(toDo, ToDoTable.NAME);
+>>>>>>> parent of a38eee0... transition to Firebase, transition to firebase RecyclerViewAdapter
                 ToDoLab.get(getActivity()).firebaseAddToDO(toDo, ToDoTable.NAME);
 
                 ToDoLab.get(getActivity()).addToDo(toDo, ToDoTable.NAME);
@@ -141,7 +119,7 @@ public class ToDoListFragment extends Fragment {
 
         updateUI();
 
-        //PollService.setServiceAlarm(getActivity(),true);
+        PollService.setServiceAlarm(getActivity(),true);
 
         return view;
     }
@@ -172,7 +150,7 @@ public class ToDoListFragment extends Fragment {
         MenuItem searchItem = menu.findItem(R.id.menu_item_search);
 
 
-        /*final SearchView searchView = (SearchView) searchItem.getActionView();
+        final SearchView searchView = (SearchView) searchItem.getActionView();
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -190,7 +168,7 @@ public class ToDoListFragment extends Fragment {
 
                 return false;
             }
-        });*/
+        });
 
         MenuItem subtitleItem = menu.findItem(R.id.menu_item_show_subtitle);
         if (mSubtitleVisible) {
@@ -231,16 +209,16 @@ public class ToDoListFragment extends Fragment {
     }
 
     public void updateUI() {
-        //ToDoLab todoLab = ToDoLab.get(getActivity());
-        //List<ToDo> toDos = todoLab.getToDos(ToDoTable.NAME);
+        ToDoLab todoLab = ToDoLab.get(getActivity());
+        List<ToDo> toDos = todoLab.getToDos(ToDoTable.NAME);
 
 
-        if (mReference == null){
+        if (toDos.size() == 0){
             mTextView.setVisibility(View.VISIBLE);
 
         }else {
             mTextView.setVisibility(View.INVISIBLE);
-            /*for (ToDo toDo : toDos){
+            for (ToDo toDo : toDos){
                 if (toDo.getNotificationDate().getTime() == 0){
 
                 }else {
@@ -250,47 +228,29 @@ public class ToDoListFragment extends Fragment {
                         ToDoLab.get(getActivity()).deleteToDo(toDo, ToDoTable.NAME, ToDoTable.Cols.UUID);
                     }
                 }
-            }*/
+            }
         }
 
-        //if (mAdapter == null) {
-            mAdapter = new FirebaseRecyclerAdapter<ToDo, ToDoHolder>(
-                    ToDo.class,
-                    R.layout.list_item_todo,
-                    ToDoHolder.class,
-                    mReference
-            ) {
-                @Override
-                protected void populateViewHolder(ToDoHolder viewHolder, ToDo model, int position) {
-                    viewHolder.mTitleTextView.setText(model.getTitle());
-                    if (model.getNotificationDate().getTime() < model.getDate().getTime()){
-                        viewHolder.mDateTextView.setText(R.string.the_notication_date_not_introduced);
-                    }else {
-                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEEE HH:mm, dd.MM", Locale.getDefault());
-                        viewHolder.mDateTextView.setText(simpleDateFormat.format(model.getNotificationDate()));
-                    }
-                    viewHolder.mPriorityCheckBox.setChecked(model.isPriority());
-                }
-            };
+        if (mAdapter == null) {
+            mAdapter = new ToDoAdapter(toDos);
             mToDoRecyclerView.setAdapter(mAdapter);
-        //}else {
-            //mToDoRecyclerView.setAdapter(mAdapter);
-                //mAdapter.setToDos(toDos);
+        }else {
+                mAdapter.setToDos(toDos);
                 mAdapter.notifyDataSetChanged();
 
 
             updateSubtitle();
 
 
-        //}
+        }
     }
 
-    public static class ToDoHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+    private class ToDoHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         private TextView mTitleTextView;
         private TextView mDateTextView;
         private CheckBox mPriorityCheckBox;
-        //private ToDo mToDo;
+        private ToDo mToDo;
 
         public ToDoHolder(View itemView) {
             super(itemView);
@@ -300,7 +260,7 @@ public class ToDoListFragment extends Fragment {
             mPriorityCheckBox = (CheckBox) itemView.findViewById(R.id.list_item_todo_priority_check_box);
         }
 
-        /*public void bindToDo(ToDo toDo){
+        public void bindToDo(ToDo toDo){
             mToDo = toDo;
             mTitleTextView.setText(mToDo.getTitle());
             if (mToDo.getNotificationDate().getTime() < mToDo.getDate().getTime()){
@@ -314,17 +274,15 @@ public class ToDoListFragment extends Fragment {
             mPriorityCheckBox.setChecked(mToDo.isPriority());
             mPriorityCheckBox.setEnabled(false);
 
-        }*/
+        }
 
         @Override
         public void onClick(View v) {
-            //mCallbacks.onToDoSelected(mToDo);
+            mCallbacks.onToDoSelected(mToDo);
         }
 
 
     }
-
-
 
     private void updateToDo(ToDo toDo, String tableName, String colsUUID){
         ToDoLab.get(getActivity())
@@ -333,7 +291,7 @@ public class ToDoListFragment extends Fragment {
 
 
 
-    /*private class ToDoAdapter extends RecyclerView.Adapter<ToDoHolder>{
+    private class ToDoAdapter extends RecyclerView.Adapter<ToDoHolder>{
 
         private List<ToDo> mToDos;
 
@@ -366,6 +324,6 @@ public class ToDoListFragment extends Fragment {
         }
 
 
-    }*/
+    }
 
 }

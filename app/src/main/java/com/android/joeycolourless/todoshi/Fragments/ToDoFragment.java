@@ -181,13 +181,7 @@ public class ToDoFragment extends Fragment implements OnBackPressedListener {
         setHasOptionsMenu(true);
 
         UUID toDoId = (UUID) getArguments().getSerializable(ARG_TODO_ID);
-        for (ToDo toDo : ToDoListFragment.mToDos){
-            if (toDo.getId().equals(toDoId)){
-                mToDo = toDo;
-            }
-        }
-        //mToDo = ToDoLab.get(getActivity()).getTodo(toDoId, ToDoTable.NAME, ToDoTable.Cols.UUID);
-        //mToDo = ToDoLab.get(getContext()).getToDoFireBase(ToDoTable.NAME, toDoId);
+        mToDo = ToDoLab.get(getActivity()).getTodo(toDoId, ToDoTable.NAME, ToDoTable.Cols.UUID);
         try {
             if (mToDo.getTitle().equals(getString(R.string.empty))){
             mToDo.setTitle("");
@@ -295,11 +289,7 @@ public class ToDoFragment extends Fragment implements OnBackPressedListener {
             }
         });
         toolbar.inflateMenu(R.menu.menu_fragment_todo);
-        Menu menu = toolbar.getMenu();
-        MenuItem shareItem = menu.findItem(R.id.share_todo);
-        if (mToDo.getTitle().equals("")){
-            shareItem.setVisible(false);
-        }else shareItem.setVisible(true);
+
 
 
 

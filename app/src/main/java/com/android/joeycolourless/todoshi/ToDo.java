@@ -38,7 +38,7 @@ public class ToDo implements Cloneable{
         mId = id;
         mTitle = "";
         mDate = new Date();
-        mNotificationDate = new Date(0);
+        mNotificationDate = null;
         mFinish = false;
         mNotification = false;
         mSuccess = false;
