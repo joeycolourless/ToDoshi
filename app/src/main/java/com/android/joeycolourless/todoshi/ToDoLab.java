@@ -5,11 +5,10 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.os.Environment;
 import android.support.annotation.NonNull;
-import android.telephony.PhoneNumberUtils;
 import android.widget.Toast;
 
+import com.android.joeycolourless.todoshi.Fragments.ToDoListFragment;
 import com.android.joeycolourless.todoshi.datebase.ToDoBaseHelper;
 import com.android.joeycolourless.todoshi.datebase.ToDoCursorWrapper;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -23,13 +22,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.Executor;
 
 import static com.android.joeycolourless.todoshi.datebase.ToDODbSchema.ToDoCompletedTable;
 import static com.android.joeycolourless.todoshi.datebase.ToDODbSchema.ToDoTable;
@@ -46,9 +43,10 @@ public class ToDoLab {
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private FirebaseAuth.AuthStateListener mAuthListener;
 
-    private DatabaseReference mFirebaseDatebaseRef;
+    private DatabaseReference mFirebaseDatabaseRef;
+    private List<ToDo> toDos = new ArrayList<>();
 
-    List<ToDo> list = new ArrayList<>();
+
 
 
     public static ToDoLab get(Context context){
@@ -77,8 +75,8 @@ public class ToDoLab {
     }
 
     public void firebaseAddToDO(ToDo toDo, String tableName){
-        mFirebaseDatebaseRef = FirebaseDatabase.getInstance().getReference(mAuth.getCurrentUser().getUid());
-        mFirebaseDatebaseRef.child(tableName).child(toDo.getIdFireBase()).setValue(toDo);
+        mFirebaseDatabaseRef = FirebaseDatabase.getInstance().getReference(mAuth.getCurrentUser().getUid());
+        mFirebaseDatabaseRef.child(tableName).child(toDo.getIdFireBase()).setValue(toDo);
     }
 
     private ContentValues getContentValuesForCompletedToDo(ToDo toDo) {
@@ -96,9 +94,10 @@ public class ToDoLab {
     }
 
     public List<ToDo> getToDos(String tableName){
-        List<ToDo> toDos = new ArrayList<>();
 
-        ToDoCursorWrapper cursorWrapper = queryToDos(tableName,null, null);
+
+
+        /*ToDoCursorWrapper cursorWrapper = queryToDos(tableName,null, null);
 
         try{
             cursorWrapper.moveToFirst();
@@ -118,9 +117,9 @@ public class ToDoLab {
             public int compare(ToDo o1, ToDo o2) {
                 return o1.getDate().compareTo(o2.getDate());
             }
-        });
+        });*/
 
-        return toDos;
+        return ToDoListFragment.mToDos;
     }
 
     public void deleteToDo(ToDo toDo, String tableName, String UUID){
@@ -152,10 +151,21 @@ public class ToDoLab {
         }
     }
 
-    public ToDo getToDoFireBase(ToDo toDo, String tableName){
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference(mAuth.getCurrentUser().getUid()).child(tableName).child(toDo.getIdFireBase());
+    public ToDo getToDoFireBase(String tableName, UUID uuid){
+        final ToDo[] toDo1 = new ToDo[1];
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference(mAuth.getCurrentUser().getUid()).child(tableName).child(String.valueOf(uuid));
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                toDo1[0] = dataSnapshot.getValue(ToDo.class);
+            }
 
-        return toDo;
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        return toDo1[0];
     }
 
     public List<ToDo> getToDosSearch(String searchTerm, String tableName){

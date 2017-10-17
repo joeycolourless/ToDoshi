@@ -167,7 +167,7 @@ public class ToDoListCompletedFragment extends Fragment {
         @Override
         public void onBindViewHolder(ToDoHolder holder, int position) {
             ToDo toDo = mToDos.get(position);
-            toDo.setPosition(position);
+            //toDo.setPosition(position);
             updateToDo(toDo, ToDODbSchema.ToDoTable.NAME, ToDODbSchema.ToDoTable.Cols.UUID);
             holder.bindToDo(toDo);
         }

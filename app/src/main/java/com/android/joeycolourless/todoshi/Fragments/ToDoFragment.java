@@ -183,7 +183,13 @@ public class ToDoFragment extends Fragment implements OnBackPressedListener {
         setHasOptionsMenu(true);
 
         UUID toDoId = (UUID) getArguments().getSerializable(ARG_TODO_ID);
-        mToDo = ToDoLab.get(getActivity()).getTodo(toDoId, ToDoTable.NAME, ToDoTable.Cols.UUID);
+        for (ToDo toDo : ToDoListFragment.mToDos){
+            if (toDo.getId().equals(toDoId)){
+                mToDo = toDo;
+            }
+        }
+        //mToDo = ToDoLab.get(getActivity()).getTodo(toDoId, ToDoTable.NAME, ToDoTable.Cols.UUID);
+        //mToDo = ToDoLab.get(getContext()).getToDoFireBase(ToDoTable.NAME, toDoId);
         try {
             if (mToDo.getTitle().equals(getString(R.string.empty))){
             mToDo.setTitle("");
