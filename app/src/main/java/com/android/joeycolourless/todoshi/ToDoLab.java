@@ -16,11 +16,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -43,11 +38,14 @@ public class ToDoLab {
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private FirebaseAuth.AuthStateListener mAuthListener;
 
+<<<<<<< HEAD
     private DatabaseReference mFirebaseDatabaseRef;
     private List<ToDo> toDos = new ArrayList<>();
 
 
 
+=======
+>>>>>>> parent of 75f766c... transition to Firebase, added functions for to add new Tasks to RealTimeDatabase and update them
 
     public static ToDoLab get(Context context){
         if (sToDoLab == null){
@@ -61,7 +59,6 @@ public class ToDoLab {
         mDateBase = new ToDoBaseHelper(mContext)
                 .getWritableDatabase();
 
-
     }
 
     public void addToDo(ToDo toDo, String tableName){
@@ -74,15 +71,17 @@ public class ToDoLab {
         mDateBase.insert(tableName, null, values);
     }
 
+<<<<<<< HEAD
     public void firebaseAddToDO(ToDo toDo, String tableName){
         mFirebaseDatabaseRef = FirebaseDatabase.getInstance().getReference(mAuth.getCurrentUser().getUid());
         mFirebaseDatabaseRef.child(tableName).child(toDo.getIdFireBase()).setValue(toDo);
     }
 
+=======
+>>>>>>> parent of 75f766c... transition to Firebase, added functions for to add new Tasks to RealTimeDatabase and update them
     private ContentValues getContentValuesForCompletedToDo(ToDo toDo) {
         ContentValues values = new ContentValues();
         values.put(ToDoCompletedTable.Cols.UUID, toDo.getId().toString());
-        values.put(ToDoCompletedTable.Cols.IDFB, toDo.getIdFireBase());
         values.put(ToDoCompletedTable.Cols.TITLE, toDo.getTitle());
         values.put(ToDoCompletedTable.Cols.DETAILS, toDo.getDetails());
         values.put(ToDoCompletedTable.Cols.DATE, toDo.getDate().getTime());
@@ -151,6 +150,7 @@ public class ToDoLab {
         }
     }
 
+<<<<<<< HEAD
     public ToDo getToDoFireBase(String tableName, UUID uuid){
         final ToDo[] toDo1 = new ToDo[1];
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference(mAuth.getCurrentUser().getUid()).child(tableName).child(String.valueOf(uuid));
@@ -168,6 +168,8 @@ public class ToDoLab {
         return toDo1[0];
     }
 
+=======
+>>>>>>> parent of 75f766c... transition to Firebase, added functions for to add new Tasks to RealTimeDatabase and update them
     public List<ToDo> getToDosSearch(String searchTerm, String tableName){
         List<ToDo> toDos = new ArrayList<>();
         String[] title = new String[2];
@@ -201,7 +203,14 @@ public class ToDoLab {
 
     }
 
+    public File getPhotoFile(ToDo toDo){
+        File externalFilesDir = mContext.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
 
+        if (externalFilesDir == null){
+            return null;
+        }
+        return new File(externalFilesDir, toDo.getPhotoFilename());
+    }
 
     public void updateToDo(ToDo toDo, String tableName, String uuid){
         String uuidString = toDo.getId().toString();
@@ -216,19 +225,9 @@ public class ToDoLab {
         mDateBase.update(tableName, values, uuid + " = ?", new String[]{ uuidString});
     }
 
-    public void updateToDoFireBase(final String tableName, final ToDo toDo, FirebaseUser user){
-        DatabaseReference reference;
-        reference = FirebaseDatabase.getInstance().getReference(user.getUid()).child(tableName).child(toDo.getIdFireBase());
-        reference.setValue(toDo);
-    }
-
-
-
-
     private static ContentValues getContentValues(ToDo toDo){
         ContentValues values = new ContentValues();
         values.put(ToDoTable.Cols.UUID, toDo.getId().toString());
-        values.put(ToDoTable.Cols.IDFB, toDo.getIdFireBase());
         values.put(ToDoTable.Cols.TITLE, toDo.getTitle());
         values.put(ToDoTable.Cols.DETAILS, toDo.getDetails());
         values.put(ToDoTable.Cols.DATE, toDo.getDate().getTime());

@@ -19,7 +19,6 @@ public class ToDoCursorWrapper extends CursorWrapper {
 
     public ToDo getToDo(){
         String uuidString = getString(getColumnIndex(ToDoTable.Cols.UUID));
-        String idFB = getString(getColumnIndex(ToDoTable.Cols.IDFB));
         String title = getString(getColumnIndex(ToDoTable.Cols.TITLE));
         String details = getString(getColumnIndex(ToDoTable.Cols.DETAILS));
         long date = getLong(getColumnIndex(ToDoTable.Cols.DATE));
@@ -32,7 +31,6 @@ public class ToDoCursorWrapper extends CursorWrapper {
 
         ToDo toDo = new ToDo(UUID.fromString(uuidString));
         toDo.setTitle(title);
-        toDo.setIdFireBase(idFB);
         toDo.setDetails(details);
         toDo.setDate(new Date(date));
         toDo.setPriority(isPriority != 0);
@@ -46,7 +44,6 @@ public class ToDoCursorWrapper extends CursorWrapper {
 
     public ToDo getCompletedTodo(){
         String uuidString = getString(getColumnIndex(ToDoCompletedTable.Cols.UUID));
-        String idFB = getString(getColumnIndex(ToDoCompletedTable.Cols.IDFB));
         String title = getString(getColumnIndex(ToDoCompletedTable.Cols.TITLE));
         String details = getString(getColumnIndex(ToDoCompletedTable.Cols.DETAILS));
         long date = getLong(getColumnIndex(ToDoCompletedTable.Cols.DATE));
@@ -55,13 +52,12 @@ public class ToDoCursorWrapper extends CursorWrapper {
         int isSuccess = getInt(getColumnIndex(ToDoCompletedTable.Cols.SUCCESS));
 
         ToDo toDo = new ToDo(UUID.fromString(uuidString));
-        toDo.setIdFireBase(idFB);
         toDo.setTitle(title);
         toDo.setDetails(details);
         toDo.setDate(new Date(date));
         toDo.setComments(comments);
         toDo.setFinish(isFinish != 0);
-        toDo.setSuccess(isSuccess != 0);
+        toDo.setmSuccess(isSuccess != 0);
 
 
         return toDo;

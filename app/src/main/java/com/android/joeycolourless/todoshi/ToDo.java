@@ -1,8 +1,5 @@
 package com.android.joeycolourless.todoshi;
 
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-
 import java.util.Date;
 import java.util.UUID;
 
@@ -13,7 +10,6 @@ import java.util.UUID;
 public class ToDo implements Cloneable{
 
     private UUID mId;
-    private String mIdFireBase;
     private String mTitle;
     private String mDetails;
     private Date mDate;
@@ -22,8 +18,6 @@ public class ToDo implements Cloneable{
     private boolean mFinish;
     private boolean mNotification;
     private boolean mSuccess;
-
-    DatabaseReference mReference;
 
     public boolean isNotification() {
         return mNotification;
@@ -48,9 +42,6 @@ public class ToDo implements Cloneable{
         mFinish = false;
         mNotification = false;
         mSuccess = false;
-
-        mReference = FirebaseDatabase.getInstance().getReference();
-        mIdFireBase = mReference.push().getKey();
     }
 
     @Override
@@ -141,6 +132,10 @@ public class ToDo implements Cloneable{
         mPosition = position;
     }
 
+    public String getPhotoFilename(){
+        return "IMG_" + getId().toString()+ ".jpg";
+    }
+
     public String getComments() {
         return mComments;
     }
@@ -165,18 +160,11 @@ public class ToDo implements Cloneable{
         mFinish = finish;
     }
 
-    public boolean isSuccess() {
+    public boolean ismSuccess() {
         return mSuccess;
     }
-    public String getIdFireBase() {
-        return mIdFireBase;
-    }
 
-    public void setIdFireBase(String mIdFireBase) {
-        this.mIdFireBase = mIdFireBase;
-    }
-
-    public void setSuccess(boolean mSuccess) {
+    public void setmSuccess(boolean mSuccess) {
         this.mSuccess = mSuccess;
     }
 }

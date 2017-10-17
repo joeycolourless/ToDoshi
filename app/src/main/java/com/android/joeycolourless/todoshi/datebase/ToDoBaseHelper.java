@@ -25,7 +25,6 @@ public class ToDoBaseHelper extends SQLiteOpenHelper {
         db.execSQL("create table " + ToDoTable.NAME + "(" +
             " _id integer primary key autoincrement, " +
             ToDoTable.Cols.UUID + ", " +
-            ToDoTable.Cols.IDFB + ", " +
             ToDoTable.Cols.TITLE + ", " +
             ToDoTable.Cols.DETAILS + ", " +
             ToDoTable.Cols.DATE + ", " +
@@ -38,7 +37,6 @@ public class ToDoBaseHelper extends SQLiteOpenHelper {
         db.execSQL("create table " + ToDoCompletedTable.NAME + "(" +
                 " _id integer primary key autoincrement, " +
                 ToDoCompletedTable.Cols.UUID + ", " +
-                ToDoCompletedTable.Cols.IDFB + ", " +
                 ToDoCompletedTable.Cols.TITLE + ", " +
                 ToDoCompletedTable.Cols.DETAILS + ", " +
                 ToDoCompletedTable.Cols.DATE + ", " +

@@ -42,6 +42,9 @@ import java.util.Locale;
 
 import static com.android.joeycolourless.todoshi.datebase.ToDODbSchema.ToDoTable;
 
+/**
+ * Created by admin on 13.03.2017.
+ */
 
 public class ToDoListFragment extends Fragment {
 
@@ -118,8 +121,12 @@ public class ToDoListFragment extends Fragment {
             public void onClick(View v) {
                 ToDo toDo = new ToDo();
 
+
                 //ToDoLab.get(getActivity()).addToDo(toDo, ToDoTable.NAME);
                 ToDoLab.get(getActivity()).firebaseAddToDO(toDo, ToDoTable.NAME);
+
+                ToDoLab.get(getActivity()).addToDo(toDo, ToDoTable.NAME);
+
                 //updateUI();
                 mCallbacks.onToDoSelected(toDo);
             }
@@ -211,17 +218,9 @@ public class ToDoListFragment extends Fragment {
     }
 
     private void updateSubtitle(){
-        //ToDoLab toDoLab = ToDoLab.get(getActivity());
-        //int toDoCount = toDoLab.getToDos(ToDoTable.NAME).size();
-        //String subtitle = getResources().getQuantityString(R.plurals.subtitle_plural, toDoCount, toDoCount);
-        String subtitle = "Not auth";
-        try {
-            if (mAuth.getCurrentUser().getEmail() != null) {
-                subtitle = mAuth.getCurrentUser().getEmail();
-            }
-        }catch (NullPointerException e){
-            subtitle = "Not auth";
-        }
+        ToDoLab toDoLab = ToDoLab.get(getActivity());
+        int toDoCount = toDoLab.getToDos(ToDoTable.NAME).size();
+        String subtitle = getResources().getQuantityString(R.plurals.subtitle_plural, toDoCount, toDoCount);
 
         if (!mSubtitleVisible){
             subtitle = null;
