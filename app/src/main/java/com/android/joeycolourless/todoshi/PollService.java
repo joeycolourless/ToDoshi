@@ -57,7 +57,8 @@ public class PollService extends IntentService {
         Log.i(TAG, "Received in intent: " + intent);
         Context context = getApplicationContext();
         ToDoLab todoLab = ToDoLab.get(context);
-        List<ToDo> toDos = todoLab.getToDos(ToDODbSchema.ToDoTable.NAME);
+        String tableName = ToDODbSchema.ToDoTable.NAME;
+        List<ToDo> toDos = todoLab.getToDos(tableName);
 
 
 
@@ -66,7 +67,7 @@ public class PollService extends IntentService {
                 long time = toDo.getNotificationDate().getTime() - new Date().getTime();
                 if (time < TIME_DIFFERENCE && time > 0 && toDo.isNotification()) {
 
-                    Intent notificationIntent = ToDoPagerActivity.newIntent(this, toDo.getId(), ToDODbSchema.ToDoTable.NAME);
+                    Intent notificationIntent = ToDoPagerActivity.newIntent(this, toDo.getId(), tableName);
                     PendingIntent contentIntent = PendingIntent.getActivity(context,
                             0, notificationIntent,
                             PendingIntent.FLAG_CANCEL_CURRENT);
@@ -89,12 +90,21 @@ public class PollService extends IntentService {
                     notification.defaults = Notification.DEFAULT_ALL;
                     notificationManager.notify((int) toDo.getId().getLeastSignificantBits(), notification);
                     toDo.setNotification(false);
-                    ToDoLab.get(context).updateToDo(toDo, ToDODbSchema.ToDoTable.NAME, ToDODbSchema.ToDoTable.Cols.UUID);
+
+
+
                 }
+
+            }
+            if (toDo.getSync() < 5){
+                //ToDoLab.get(context).updateToDo(toDo, tableName, ToDODbSchema.ToDoTable.Cols.UUID, toDo.getSync());
+
 
             }
         }
 
         sendBroadcast(new Intent(ACTION_SHOW_NOTIFICATION));
+
+
     }
 }

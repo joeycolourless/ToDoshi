@@ -6,7 +6,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -14,7 +13,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.Switch;
 import android.widget.TextView;
 
 import com.android.joeycolourless.todoshi.R;
@@ -146,7 +144,7 @@ public class ToDoListCompletedFragment extends Fragment {
 
     private void updateToDo(ToDo toDo, String tableName, String colsUUID){
         ToDoLab.get(getActivity())
-                .updateToDo(toDo, tableName, colsUUID);
+                .updateToDo(toDo, tableName, colsUUID, toDo.getSync());
     }
 
     private class ToDoAdapter extends RecyclerView.Adapter<ToDoHolder>{

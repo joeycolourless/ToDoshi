@@ -21,12 +21,14 @@ public class ToDoCursorWrapper extends CursorWrapper {
         String uuidString = getString(getColumnIndex(ToDoTable.Cols.UUID));
         String title = getString(getColumnIndex(ToDoTable.Cols.TITLE));
         String details = getString(getColumnIndex(ToDoTable.Cols.DETAILS));
+        String idFB = getString(getColumnIndex(ToDoTable.Cols.IDFB));
         long date = getLong(getColumnIndex(ToDoTable.Cols.DATE));
         long notificationDate = getLong(getColumnIndex(ToDoTable.Cols.NOTIFICATION_DATE));
         int isPriority = getInt(getColumnIndex(ToDoTable.Cols.PRIORITY));
         int isFinish = getInt(getColumnIndex(ToDoTable.Cols.FINISH));
         int position = getInt(getColumnIndex(ToDoTable.Cols.POSITION));
         int isNotification = getInt(getColumnIndex(ToDoTable.Cols.NOTIFICATION));
+        int isSync = getInt(getColumnIndex(ToDoTable.Cols.SYNC));
 
 
         ToDo toDo = new ToDo(UUID.fromString(uuidString));
@@ -38,6 +40,8 @@ public class ToDoCursorWrapper extends CursorWrapper {
         toDo.setPosition(position);
         toDo.setNotificationDate(new Date(notificationDate));
         toDo.setNotification(isNotification != 0);
+        toDo.setSync(isSync);
+        toDo.setIdFirebase(idFB);
 
         return toDo;
     }
@@ -46,10 +50,12 @@ public class ToDoCursorWrapper extends CursorWrapper {
         String uuidString = getString(getColumnIndex(ToDoCompletedTable.Cols.UUID));
         String title = getString(getColumnIndex(ToDoCompletedTable.Cols.TITLE));
         String details = getString(getColumnIndex(ToDoCompletedTable.Cols.DETAILS));
+        String idFB = getString(getColumnIndex(ToDoTable.Cols.IDFB));
         long date = getLong(getColumnIndex(ToDoCompletedTable.Cols.DATE));
         String comments = getString(getColumnIndex(ToDoCompletedTable.Cols.COMMENTS));
         int isFinish = getInt(getColumnIndex(ToDoCompletedTable.Cols.FINISH));
         int isSuccess = getInt(getColumnIndex(ToDoCompletedTable.Cols.SUCCESS));
+        int isSync = getInt(getColumnIndex(ToDoTable.Cols.SYNC));
 
         ToDo toDo = new ToDo(UUID.fromString(uuidString));
         toDo.setTitle(title);
@@ -57,7 +63,9 @@ public class ToDoCursorWrapper extends CursorWrapper {
         toDo.setDate(new Date(date));
         toDo.setComments(comments);
         toDo.setFinish(isFinish != 0);
-        toDo.setmSuccess(isSuccess != 0);
+        toDo.setSuccess(isSuccess != 0);
+        toDo.setSync(isSync);
+        toDo.setIdFirebase(idFB);
 
 
         return toDo;

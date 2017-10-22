@@ -25,7 +25,7 @@ import java.util.UUID;
 public class ToDoFragmentCompleted extends Fragment {
 
     private static final String ARG_TODO_ID = "todo_id";
-    private ToDo mTodo;
+    private ToDo mToDo;
 
     public static ToDoFragmentCompleted newInstance(UUID uuid){
         Bundle args = new Bundle();
@@ -41,7 +41,7 @@ public class ToDoFragmentCompleted extends Fragment {
         super.onCreate(savedInstanceState);
 
         UUID uuid = (UUID) getArguments().getSerializable(ARG_TODO_ID);
-        mTodo = ToDoLab.get(getContext()).getTodo(uuid, ToDODbSchema.ToDoCompletedTable.NAME, ToDODbSchema.ToDoCompletedTable.Cols.UUID);
+        mToDo = ToDoLab.get(getContext()).getTodo(uuid, ToDODbSchema.ToDoCompletedTable.NAME, ToDODbSchema.ToDoCompletedTable.Cols.UUID);
     }
 
     @Nullable
@@ -57,7 +57,7 @@ public class ToDoFragmentCompleted extends Fragment {
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()){
                     case R.id.delete_todo:
-                        ToDoLab.get(getContext()).deleteToDo(mTodo, ToDODbSchema.ToDoCompletedTable.NAME, ToDODbSchema.ToDoCompletedTable.Cols.UUID);
+                        ToDoLab.get(getContext()).deleteToDo(mToDo, ToDODbSchema.ToDoCompletedTable.NAME, ToDODbSchema.ToDoCompletedTable.Cols.UUID);
                         getActivity().finish();
                         return true;
                     default:
@@ -67,21 +67,21 @@ public class ToDoFragmentCompleted extends Fragment {
         });
 
         EditText title = (EditText) view.findViewById(R.id.todo_title);
-        title.setText(mTodo.getTitle());
+        title.setText(mToDo.getTitle());
 
         EditText details = (EditText) view.findViewById(R.id.todo_details);
-        details.setText(mTodo.getDetails());
+        details.setText(mToDo.getDetails());
 
         TextView completedTo = (TextView)view.findViewById(R.id.text_view_todo_date_completed);
-        if (mTodo.getDate() == null){
+        if (mToDo.getDate() == null){
             completedTo.setText(R.string.no_date);
         }else {
-            completedTo.setText(mTodo.getDate().toString());
+            completedTo.setText(mToDo.getDate().toString());
         }
 
 
         EditText comment = (EditText)view.findViewById(R.id.todo_comment);
-        comment.setText(mTodo.getComments());
+        comment.setText(mToDo.getComments());
         comment.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -90,8 +90,8 @@ public class ToDoFragmentCompleted extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                mTodo.setComments(s.toString());
-                ToDoLab.get(getContext()).updateToDo(mTodo, ToDODbSchema.ToDoCompletedTable.NAME, ToDODbSchema.ToDoCompletedTable.Cols.UUID);
+                mToDo.setComments(s.toString());
+                ToDoLab.get(getContext()).updateToDo(mToDo, ToDODbSchema.ToDoCompletedTable.NAME, ToDODbSchema.ToDoCompletedTable.Cols.UUID, mToDo.getSync());
             }
 
             @Override

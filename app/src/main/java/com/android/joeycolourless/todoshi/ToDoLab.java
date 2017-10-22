@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 import android.telephony.PhoneNumberUtils;
 import android.widget.Toast;
 
+import com.android.joeycolourless.todoshi.Fragments.AuthFragment;
 import com.android.joeycolourless.todoshi.datebase.ToDoBaseHelper;
 import com.android.joeycolourless.todoshi.datebase.ToDoCursorWrapper;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -17,6 +18,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -34,26 +37,19 @@ import static com.android.joeycolourless.todoshi.datebase.ToDODbSchema.ToDoTable
 public class ToDoLab {
     private static ToDoLab sToDoLab;
 
+    public static final int NOTHING = 0;
+    public static final int ADD_SYNC = 1;
+    public static final int DELETE = 2;
+    public static final int DONE = 3;
+
 
     private Context mContext;
     private SQLiteDatabase mDateBase;
 
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
-    private FirebaseAuth.AuthStateListener mAuthListener;
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-    private DatabaseReference mFirebaseDatabaseRef;
-    private List<ToDo> toDos = new ArrayList<>();
-
-=======
     private DatabaseReference mFirebaseDatebaseRef;
->>>>>>> parent of a38eee0... transition to Firebase, transition to firebase RecyclerViewAdapter
 
-    List<ToDo> list = new ArrayList<>();
-
-=======
->>>>>>> parent of 75f766c... transition to Firebase, added functions for to add new Tasks to RealTimeDatabase and update them
 
     public static ToDoLab get(Context context){
         if (sToDoLab == null){
@@ -79,14 +75,7 @@ public class ToDoLab {
         mDateBase.insert(tableName, null, values);
     }
 
-<<<<<<< HEAD
-    public void firebaseAddToDO(ToDo toDo, String tableName){
-        mFirebaseDatebaseRef = FirebaseDatabase.getInstance().getReference(mAuth.getCurrentUser().getUid());
-        mFirebaseDatebaseRef.child(tableName).child(toDo.getIdFireBase()).setValue(toDo);
-    }
 
-=======
->>>>>>> parent of 75f766c... transition to Firebase, added functions for to add new Tasks to RealTimeDatabase and update them
     private ContentValues getContentValuesForCompletedToDo(ToDo toDo) {
         ContentValues values = new ContentValues();
         values.put(ToDoCompletedTable.Cols.UUID, toDo.getId().toString());
@@ -95,6 +84,7 @@ public class ToDoLab {
         values.put(ToDoCompletedTable.Cols.DATE, toDo.getDate().getTime());
         values.put(ToDoCompletedTable.Cols.COMMENTS, toDo.getComments());
         values.put(ToDoTable.Cols.FINISH, toDo.isFinish() ? 1 : 0);
+        values.put(ToDoTable.Cols.IDFB, toDo.getIdFirebase());
 
 
         return values;
@@ -157,29 +147,11 @@ public class ToDoLab {
         }
     }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-    public ToDo getToDoFireBase(String tableName, UUID uuid){
-        final ToDo[] toDo1 = new ToDo[1];
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference(mAuth.getCurrentUser().getUid()).child(tableName).child(String.valueOf(uuid));
-        reference.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                toDo1[0] = dataSnapshot.getValue(ToDo.class);
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-=======
-    public ToDo getToDoFireBase(ToDo toDo, String tableName){
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference(mAuth.getCurrentUser().getUid()).child(tableName).child(toDo.getIdFireBase());
->>>>>>> parent of a38eee0... transition to Firebase, transition to firebase RecyclerViewAdapter
 
-        return toDo;
-    }
 
-=======
->>>>>>> parent of 75f766c... transition to Firebase, added functions for to add new Tasks to RealTimeDatabase and update them
+
+
     public List<ToDo> getToDosSearch(String searchTerm, String tableName){
         List<ToDo> toDos = new ArrayList<>();
         String[] title = new String[2];
@@ -235,6 +207,44 @@ public class ToDoLab {
         mDateBase.update(tableName, values, uuid + " = ?", new String[]{ uuidString});
     }
 
+    public void updateToDo(ToDo toDo, String tableName, String uuid, int sync){
+        String uuidString = toDo.getId().toString();
+        firebaseSyncToDO(toDo, tableName, sync, this.mContext);
+        ContentValues values;
+        if (tableName.equals(ToDoTable.NAME)){
+            values = getContentValues(toDo);
+        }else {
+            values = getContentValuesForCompletedToDo(toDo);
+        }
+
+
+        mDateBase.update(tableName, values, uuid + " = ?", new String[]{ uuidString});
+    }
+
+    public void firebaseSyncToDO(ToDo toDo, String tableName, int option, Context context){
+        if (AuthFragment.isOnline(context)){
+            mFirebaseDatebaseRef = FirebaseDatabase.getInstance().getReference(mAuth.getCurrentUser().getUid()).child(tableName);
+            switch (option){
+                case NOTHING:
+                    break;
+                case ADD_SYNC:
+                    toDo.setSync(NOTHING);
+                    updateToDo(toDo, tableName, ToDoTable.Cols.UUID);
+                    mFirebaseDatebaseRef.child(toDo.getIdFirebase()).setValue(toDo);
+                    break;
+                case DELETE:
+                    break;
+                case DONE:
+                    break;
+                default:
+                    break;
+            }
+        }
+
+    }
+
+
+
     private static ContentValues getContentValues(ToDo toDo){
         ContentValues values = new ContentValues();
         values.put(ToDoTable.Cols.UUID, toDo.getId().toString());
@@ -248,6 +258,7 @@ public class ToDoLab {
         if (toDo.getNotificationDate() != null){
             values.put(ToDoTable.Cols.NOTIFICATION_DATE, toDo.getNotificationDate().getTime());
         }
+        values.put(ToDoTable.Cols.IDFB, toDo.getIdFirebase());
 
         return values;
     }

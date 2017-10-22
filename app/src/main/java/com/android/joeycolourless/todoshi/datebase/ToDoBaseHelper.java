@@ -31,7 +31,9 @@ public class ToDoBaseHelper extends SQLiteOpenHelper {
             ToDoTable.Cols.PRIORITY +  ", " +
             ToDoTable.Cols.POSITION + ", " +
             ToDoTable.Cols.FINISH + ", " +
+            ToDoTable.Cols.SYNC + ", " +
             ToDoTable.Cols.NOTIFICATION_DATE + ", "+
+            ToDoTable.Cols.IDFB + ", " +
             ToDoTable.Cols.NOTIFICATION  +  ")"
         );
         db.execSQL("create table " + ToDoCompletedTable.NAME + "(" +
@@ -42,6 +44,8 @@ public class ToDoBaseHelper extends SQLiteOpenHelper {
                 ToDoCompletedTable.Cols.DATE + ", " +
                 ToDoCompletedTable.Cols.FINISH + ", " +
                 ToDoCompletedTable.Cols.SUCCESS + ", " +
+                ToDoCompletedTable.Cols.SYNC + ", " +
+                ToDoTable.Cols.IDFB + ", " +
                 ToDoCompletedTable.Cols.COMMENTS +
                    ")"
         );

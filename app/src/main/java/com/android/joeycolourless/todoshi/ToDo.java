@@ -1,5 +1,9 @@
 package com.android.joeycolourless.todoshi;
 
+import com.android.joeycolourless.todoshi.datebase.ToDODbSchema;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.Date;
 import java.util.UUID;
 
@@ -14,10 +18,14 @@ public class ToDo implements Cloneable{
     private String mDetails;
     private Date mDate;
     private Date mNotificationDate;
+    private String mIdFirebase;
     private boolean mPriority;
     private boolean mFinish;
     private boolean mNotification;
     private boolean mSuccess;
+    private int mSync;
+
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
     public boolean isNotification() {
         return mNotification;
@@ -37,11 +45,13 @@ public class ToDo implements Cloneable{
     public ToDo(UUID id){
         mId = id;
         mTitle = "";
+        mIdFirebase = FirebaseDatabase.getInstance().getReference(mAuth.getCurrentUser().getUid()).child(ToDODbSchema.ToDoTable.NAME).push().getKey();
         mDate = new Date();
         mNotificationDate = null;
         mFinish = false;
         mNotification = false;
         mSuccess = false;
+        mSync = ToDoLab.ADD_SYNC;
     }
 
     @Override
@@ -55,6 +65,7 @@ public class ToDo implements Cloneable{
         if (mFinish != toDo.mFinish) return false;
         if (mNotification != toDo.mNotification) return false;
         if (mSuccess != toDo.mSuccess) return false;
+        if (mSync != toDo.mSync) return false;
         if (mPosition != toDo.mPosition) return false;
         if (mId != null ? !mId.equals(toDo.mId) : toDo.mId != null) return false;
         if (mTitle != null ? !mTitle.equals(toDo.mTitle) : toDo.mTitle != null) return false;
@@ -62,6 +73,8 @@ public class ToDo implements Cloneable{
             return false;
         if (mDate != null ? !mDate.equals(toDo.mDate) : toDo.mDate != null) return false;
         if (mNotificationDate != null ? !mNotificationDate.equals(toDo.mNotificationDate) : toDo.mNotificationDate != null)
+            return false;
+        if (mIdFirebase != null ? !mIdFirebase.equals(toDo.mIdFirebase) : toDo.mIdFirebase != null)
             return false;
         return mComments != null ? mComments.equals(toDo.mComments) : toDo.mComments == null;
 
@@ -74,10 +87,12 @@ public class ToDo implements Cloneable{
         result = 31 * result + (mDetails != null ? mDetails.hashCode() : 0);
         result = 31 * result + (mDate != null ? mDate.hashCode() : 0);
         result = 31 * result + (mNotificationDate != null ? mNotificationDate.hashCode() : 0);
+        result = 31 * result + (mIdFirebase != null ? mIdFirebase.hashCode() : 0);
         result = 31 * result + (mPriority ? 1 : 0);
         result = 31 * result + (mFinish ? 1 : 0);
         result = 31 * result + (mNotification ? 1 : 0);
         result = 31 * result + (mSuccess ? 1 : 0);
+        result = 31 * result + mSync;
         result = 31 * result + mPosition;
         result = 31 * result + (mComments != null ? mComments.hashCode() : 0);
         return result;
@@ -160,11 +175,27 @@ public class ToDo implements Cloneable{
         mFinish = finish;
     }
 
-    public boolean ismSuccess() {
+    public boolean isSuccess() {
         return mSuccess;
     }
 
-    public void setmSuccess(boolean mSuccess) {
+    public void setSuccess(boolean mSuccess) {
         this.mSuccess = mSuccess;
+    }
+
+    public int getSync() {
+        return mSync;
+    }
+
+    public void setSync(int mSync) {
+        this.mSync = mSync;
+    }
+
+    public String getIdFirebase() {
+        return mIdFirebase;
+    }
+
+    public void setIdFirebase(String mIdFirebase) {
+        this.mIdFirebase = mIdFirebase;
     }
 }

@@ -95,13 +95,10 @@ public class ToDoListFragment extends Fragment {
             public void onClick(View v) {
                 ToDo toDo = new ToDo();
 
-<<<<<<< HEAD
 
-                //ToDoLab.get(getActivity()).addToDo(toDo, ToDoTable.NAME);
-=======
-                ToDoLab.get(getActivity()).addToDo(toDo, ToDoTable.NAME);
->>>>>>> parent of a38eee0... transition to Firebase, transition to firebase RecyclerViewAdapter
-                ToDoLab.get(getActivity()).firebaseAddToDO(toDo, ToDoTable.NAME);
+
+
+                //ToDoLab.get(getActivity()).firebaseAddToDO(toDo, ToDoTable.NAME);
 
                 ToDoLab.get(getActivity()).addToDo(toDo, ToDoTable.NAME);
 

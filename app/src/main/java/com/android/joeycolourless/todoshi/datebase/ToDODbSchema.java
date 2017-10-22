@@ -18,6 +18,8 @@ public class ToDODbSchema {
             public static final String NOTIFICATION_DATE = "notification_date";
             public static final String FINISH = "finish";
             public static final String NOTIFICATION = "notification";
+            public static final String SYNC = "sync";
+            public static final String IDFB = "id_firebase";
 
         }
     }
@@ -33,6 +35,7 @@ public class ToDODbSchema {
             public static final String COMMENTS = "comments";
             public static final String FINISH = "finish";
             public static final String SUCCESS = "success";
+            public static final String SYNC = "sync";
         }
     }
 }
