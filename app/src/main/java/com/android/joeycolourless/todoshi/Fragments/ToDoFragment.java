@@ -206,17 +206,20 @@ public class ToDoFragment extends Fragment implements OnBackPressedListener {
     public void onPause() {
         super.onPause();
         try {
-            if (mToDo.getTitle().equals("") || mToDo.getTitle() == null) {
-                mToDo.setTitle(getString(R.string.empty));
-                mToDo.setNotification(false);
-                mToDo.setNotificationDate(null);
-                updateToDo();
-            }else updateToDo();
+            if (ToDoLab.get(getContext()).getTodo(mToDo.getId(), ToDoTable.NAME, ToDoTable.Cols.UUID) != null){
+                if (mToDo.getTitle().equals("") || mToDo.getTitle() == null) {
+                    mToDo.setTitle(getString(R.string.empty));
+                    mToDo.setNotification(false);
+                    mToDo.setNotificationDate(null);
+                    updateToDo();
+                }else updateToDo();
+            }
+
         }catch (NullPointerException e){
-            mToDo.setTitle(getString(R.string.empty));
-            mToDo.setNotification(false);
-            mToDo.setNotificationDate(null);
-            updateToDo();
+            //mToDo.setTitle(getString(R.string.empty));
+           // mToDo.setNotification(false);
+           // mToDo.setNotificationDate(null);
+            //updateToDo();
         }
 
 

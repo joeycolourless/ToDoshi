@@ -8,10 +8,6 @@ import com.android.joeycolourless.todoshi.datebase.ToDODbSchema.ToDoTable;
 
 import static com.android.joeycolourless.todoshi.datebase.ToDODbSchema.*;
 
-/**
- * Created by admin on 19.03.2017.
- */
-
 public class ToDoBaseHelper extends SQLiteOpenHelper {
     private static final int VERSION = 1;
     private static final String DATABASE_NAME = "toDoBase.db";
@@ -48,6 +44,12 @@ public class ToDoBaseHelper extends SQLiteOpenHelper {
                 ToDoTable.Cols.IDFB + ", " +
                 ToDoCompletedTable.Cols.COMMENTS +
                    ")"
+        );
+        db.execSQL("create table " + ToDoDeletedTable.NAME + "(" +
+                " _id integer primary key autoincrement, " +
+                ToDoTable.Cols.UUID + ", " +
+                ToDoTable.Cols.IDFB +
+                ")"
         );
 
 

@@ -11,6 +11,7 @@ import android.telephony.PhoneNumberUtils;
 import android.widget.Toast;
 
 import com.android.joeycolourless.todoshi.Fragments.AuthFragment;
+import com.android.joeycolourless.todoshi.datebase.ToDODbSchema;
 import com.android.joeycolourless.todoshi.datebase.ToDoBaseHelper;
 import com.android.joeycolourless.todoshi.datebase.ToDoCursorWrapper;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -67,11 +68,22 @@ public class ToDoLab {
 
     public void addToDo(ToDo toDo, String tableName){
         ContentValues values;
-        if (tableName.equals(ToDoTable.NAME)) {
-           values  = getContentValues(toDo);
-        }else {
-            values = getContentValuesForCompletedToDo(toDo);
+        switch (tableName){
+            case ToDoTable.NAME:
+                values  = getContentValues(toDo);
+                break;
+            case ToDoCompletedTable.NAME:
+                values = getContentValuesForCompletedToDo(toDo);
+                break;
+            case ToDODbSchema.ToDoDeletedTable.NAME:
+                values = getContentValueForDeletedToDo(toDo);
+                break;
+            default:
+                values = new ContentValues();
+                break;
         }
+
+
         mDateBase.insert(tableName, null, values);
     }
 
@@ -86,6 +98,14 @@ public class ToDoLab {
         values.put(ToDoTable.Cols.FINISH, toDo.isFinish() ? 1 : 0);
         values.put(ToDoTable.Cols.IDFB, toDo.getIdFirebase());
 
+
+        return values;
+    }
+
+    private ContentValues getContentValueForDeletedToDo(ToDo toDo){
+        ContentValues values = new ContentValues();
+        values.put(ToDoTable.Cols.UUID, toDo.getId().toString());
+        values.put(ToDoTable.Cols.IDFB, toDo.getIdFirebase());
 
         return values;
     }
@@ -119,7 +139,12 @@ public class ToDoLab {
     }
 
     public void deleteToDo(ToDo toDo, String tableName, String UUID){
+        toDo.setSync(DELETE);
+        updateToDo(toDo, tableName, UUID);
+        firebaseSyncToDO(toDo, tableName, DELETE, mContext);
+
         mDateBase.delete(tableName, UUID + " = ?" , new String[]{toDo.getId().toString()});
+
     }
 
     public void deleteAllToDos(String tableName){
@@ -185,14 +210,7 @@ public class ToDoLab {
 
     }
 
-    public File getPhotoFile(ToDo toDo){
-        File externalFilesDir = mContext.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
 
-        if (externalFilesDir == null){
-            return null;
-        }
-        return new File(externalFilesDir, toDo.getPhotoFilename());
-    }
 
     public void updateToDo(ToDo toDo, String tableName, String uuid){
         String uuidString = toDo.getId().toString();
@@ -209,7 +227,10 @@ public class ToDoLab {
 
     public void updateToDo(ToDo toDo, String tableName, String uuid, int sync){
         String uuidString = toDo.getId().toString();
-        firebaseSyncToDO(toDo, tableName, sync, this.mContext);
+        if (toDo.getSync() != DELETE){
+            firebaseSyncToDO(toDo, tableName, sync, this.mContext);
+        }
+
         ContentValues values;
         if (tableName.equals(ToDoTable.NAME)){
             values = getContentValues(toDo);
@@ -221,10 +242,10 @@ public class ToDoLab {
         mDateBase.update(tableName, values, uuid + " = ?", new String[]{ uuidString});
     }
 
-    public void firebaseSyncToDO(ToDo toDo, String tableName, int option, Context context){
+    public void firebaseSyncToDO(ToDo toDo, String tableName, int firebaseOption, Context context){
         if (AuthFragment.isOnline(context)){
             mFirebaseDatebaseRef = FirebaseDatabase.getInstance().getReference(mAuth.getCurrentUser().getUid()).child(tableName);
-            switch (option){
+            switch (firebaseOption){
                 case NOTHING:
                     break;
                 case ADD_SYNC:
@@ -233,13 +254,19 @@ public class ToDoLab {
                     mFirebaseDatebaseRef.child(toDo.getIdFirebase()).setValue(toDo);
                     break;
                 case DELETE:
+                    mFirebaseDatebaseRef.child(toDo.getIdFirebase()).removeValue();
                     break;
                 case DONE:
                     break;
                 default:
                     break;
             }
-        }
+        }else
+            switch (firebaseOption){
+                case DELETE:
+                    addToDo(toDo, ToDODbSchema.ToDoDeletedTable.NAME);
+
+            }
 
     }
 

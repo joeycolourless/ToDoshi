@@ -97,7 +97,7 @@ public class PollService extends IntentService {
 
             }
             if (toDo.getSync() < 5){
-                //ToDoLab.get(context).updateToDo(toDo, tableName, ToDODbSchema.ToDoTable.Cols.UUID, toDo.getSync());
+                ToDoLab.get(context).updateToDo(toDo, tableName, ToDODbSchema.ToDoTable.Cols.UUID, toDo.getSync());
 
 
             }

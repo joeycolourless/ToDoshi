@@ -38,4 +38,8 @@ public class ToDODbSchema {
             public static final String SYNC = "sync";
         }
     }
+
+    public static final class ToDoDeletedTable{
+        public static final String NAME = "deletedToDos";
+    }
 }
