@@ -64,6 +64,19 @@ public class ToDoListFragment extends Fragment {
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        if (AuthFragment.isOnline(getContext())) {
+            List<ToDo> list = ToDoLab.get(getContext()).getToDos(ToDODbSchema.ToDoDeletedTable.NAME);
+            if (list.size() != 0) {
+                for (ToDo toDo : list) {
+                    ToDoLab.get(getContext()).firebaseSyncToDO(toDo, ToDoTable.NAME, ToDoLab.DELETE, getContext());
+                }
+            }
+        }
+    }
+
+    @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         mCallbacks = (Callbacks) context;

@@ -118,10 +118,16 @@ public class ToDoLab {
         try{
             cursorWrapper.moveToFirst();
             while (!cursorWrapper.isAfterLast()){
-                if (tableName.equals(ToDoTable.NAME)) {
-                    toDos.add(cursorWrapper.getToDo());
-                }else {
-                    toDos.add(cursorWrapper.getCompletedTodo());
+                switch (tableName){
+                    case ToDoTable.NAME:
+                        toDos.add(cursorWrapper.getToDo());
+                        break;
+                    case ToDoCompletedTable.NAME:
+                        toDos.add(cursorWrapper.getCompletedTodo());
+                        break;
+                    case ToDODbSchema.ToDoDeletedTable.NAME:
+                        toDos.add(cursorWrapper.getDeletedToDo());
+                        break;
                 }
                 cursorWrapper.moveToNext();
             }
