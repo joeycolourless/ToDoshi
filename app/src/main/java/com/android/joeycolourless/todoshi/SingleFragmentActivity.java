@@ -1,17 +1,13 @@
 package com.android.joeycolourless.todoshi;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.widget.Toast;
-
-import com.android.joeycolourless.todoshi.Fragments.AuthFragment;
 
 
 public abstract class SingleFragmentActivity extends AppCompatActivity {

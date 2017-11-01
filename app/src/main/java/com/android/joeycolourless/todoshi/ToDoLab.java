@@ -3,18 +3,11 @@ package com.android.joeycolourless.todoshi;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
-import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.os.Environment;
 import android.support.annotation.NonNull;
-import android.telephony.PhoneNumberUtils;
 import android.widget.Toast;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 
-import com.android.joeycolourless.todoshi.Fragments.AuthFragment;
-import com.android.joeycolourless.todoshi.Fragments.ToDoListFragment;
 import com.android.joeycolourless.todoshi.datebase.ToDODbSchema;
 import com.android.joeycolourless.todoshi.datebase.ToDoBaseHelper;
 import com.android.joeycolourless.todoshi.datebase.ToDoCursorWrapper;
@@ -22,12 +15,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 
 import java.util.ArrayList;
@@ -255,7 +244,7 @@ public class ToDoLab {
     }
 
     public void firebaseSyncToDO(ToDo toDo, String tableName, int firebaseOption, Context context){
-        if (AuthFragment.isOnline(context)){
+        if (StartActivity.isOnline(context)){
             mFirebaseDatebaseRef = FirebaseDatabase.getInstance().getReference(mAuth.getCurrentUser().getUid()).child(tableName);
             switch (firebaseOption){
                 case NOTHING:

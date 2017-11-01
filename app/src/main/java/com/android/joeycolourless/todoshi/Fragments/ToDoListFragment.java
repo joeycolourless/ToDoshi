@@ -21,6 +21,7 @@ import android.widget.TextView;
 
 import com.android.joeycolourless.todoshi.PollService;
 import com.android.joeycolourless.todoshi.R;
+import com.android.joeycolourless.todoshi.StartActivity;
 import com.android.joeycolourless.todoshi.ToDo;
 import com.android.joeycolourless.todoshi.ToDoLab;
 import com.android.joeycolourless.todoshi.datebase.ToDODbSchema;
@@ -72,7 +73,7 @@ public class ToDoListFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        if (AuthFragment.isOnline(getContext())) {
+        if (StartActivity.isOnline(getContext())) {
             List<ToDo> list = ToDoLab.get(getContext()).getToDos(ToDODbSchema.ToDoDeletedTable.NAME);
             if (list.size() != 0) {
                 for (ToDo toDo : list) {
@@ -126,7 +127,7 @@ public class ToDoListFragment extends Fragment {
         }
 
 
-        if (AuthFragment.mFirstEnter){
+        if (StartActivity.mFirstEnter){
 
             firebaseStartSync();
 
@@ -222,7 +223,7 @@ public class ToDoListFragment extends Fragment {
                     ToDoLab.get(getContext()).addToDo(toDo, ToDoTable.NAME);
                 }
             updateUI();
-                AuthFragment.mFirstEnter = false;
+                StartActivity.mFirstEnter = false;
 
             }
 
