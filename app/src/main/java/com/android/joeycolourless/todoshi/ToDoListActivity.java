@@ -1,25 +1,26 @@
 package com.android.joeycolourless.todoshi;
 
-import android.app.ActivityOptions;
+import android.content.Context;
 import android.content.Intent;
-import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v4.app.Fragment;
-
 import com.android.joeycolourless.todoshi.Fragments.ToDoFragment;
-import com.android.joeycolourless.todoshi.Fragments.ToDoFragmentCompleted;
 import com.android.joeycolourless.todoshi.Fragments.ToDoListFragment;
 import com.android.joeycolourless.todoshi.datebase.ToDODbSchema;
 
-/**
- * Created by admin on 13.03.2017.
- */
 
 public class ToDoListActivity extends SingleFragmentActivity implements ToDoListFragment.Callbacks, ToDoFragment.Callbacks {
 
+    public static final String FIRST_ENTER = "first_enter";
 
+    public static Intent newInstance(boolean firstEnter, Context context){
+        Intent intent = new Intent(context, ToDoListActivity.class);
+        intent.putExtra(FIRST_ENTER, firstEnter);
+        return intent;
 
+    }
     @Override
     protected Fragment createFragment() {
+
         return new ToDoListFragment();
     }
 
@@ -47,6 +48,7 @@ public class ToDoListActivity extends SingleFragmentActivity implements ToDoList
     public void onToDoUpdated(ToDo toDo) {
         ToDoListFragment listFragment = (ToDoListFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container);
         listFragment.updateUI();
+
     }
 
 

@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,26 +18,28 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.android.joeycolourless.todoshi.R;
-import com.android.joeycolourless.todoshi.SingleFragmentActivity;
-import com.android.joeycolourless.todoshi.StartActivity;
 import com.android.joeycolourless.todoshi.ToDoLab;
 import com.android.joeycolourless.todoshi.ToDoListActivity;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import java.util.UUID;
+import com.google.android.gms.auth.api.Auth;
 
-/**
- * Created by lenovo on 30.09.2017.
- */
+
 
 public class AuthFragment extends Fragment {
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
+    private GoogleApiClient mGoogleApiClient;
 
     private Button signInButton;
     private Button signUpButton;
     private Button guestButton;
+
+    public static boolean mFirstEnter = false;
 
     public static AuthFragment newInstance(){
 
@@ -63,8 +66,8 @@ public class AuthFragment extends Fragment {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
                     // User is signed in
-                    Intent intent = new Intent(getContext(), ToDoListActivity.class);
-                    startActivity(intent);
+
+                    startActivity(ToDoListActivity.newInstance(mFirstEnter, getContext()));
 
                 } else {
                     // User is signed out
@@ -73,6 +76,8 @@ public class AuthFragment extends Fragment {
 
             }
         };
+
+
     }
 
     @Nullable
@@ -92,6 +97,7 @@ public class AuthFragment extends Fragment {
                     if ( email.getText().toString().equals("") || password.getText().toString().equals("")){
                         errorMassage(getString(R.string.one_of_the_field_empty));
                     }else{
+                        mFirstEnter = true;
                         mAuth = ToDoLab.get(getContext()).signInUser(email.getText().toString(), password.getText().toString(), getActivity());
                     }
 
@@ -132,6 +138,7 @@ public class AuthFragment extends Fragment {
 
         return view;
     }
+
 
 
 

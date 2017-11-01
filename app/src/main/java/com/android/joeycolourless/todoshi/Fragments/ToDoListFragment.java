@@ -1,7 +1,6 @@
 package com.android.joeycolourless.todoshi.Fragments;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -22,11 +21,15 @@ import android.widget.TextView;
 
 import com.android.joeycolourless.todoshi.PollService;
 import com.android.joeycolourless.todoshi.R;
-import com.android.joeycolourless.todoshi.StartActivity;
 import com.android.joeycolourless.todoshi.ToDo;
 import com.android.joeycolourless.todoshi.ToDoLab;
 import com.android.joeycolourless.todoshi.datebase.ToDODbSchema;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -42,9 +45,11 @@ import static com.android.joeycolourless.todoshi.datebase.ToDODbSchema.ToDoTable
 
 public class ToDoListFragment extends Fragment {
 
+
     private static final String TAG = "tag";
 
     private static final String SAVED_SUBTITLE_VISIBLE = "subtitle";
+    private static final String FIRST_START_UI_WITH_NEW_LOGIN = "first_start_ui_with_new_login";
 
 
     private RecyclerView mToDoRecyclerView;
@@ -54,6 +59,7 @@ public class ToDoListFragment extends Fragment {
     private Callbacks mCallbacks;
     private List<ToDo> mToDos = new ArrayList<>();
     private FirebaseAuth mAuth;
+    private DatabaseReference mFirebaseDatabaseRef;
 
 
     public interface Callbacks{
@@ -108,11 +114,6 @@ public class ToDoListFragment extends Fragment {
             public void onClick(View v) {
                 ToDo toDo = new ToDo();
 
-
-
-
-                //ToDoLab.get(getActivity()).firebaseAddToDO(toDo, ToDoTable.NAME);
-
                 ToDoLab.get(getActivity()).addToDo(toDo, ToDoTable.NAME);
 
                 //updateUI();
@@ -125,9 +126,13 @@ public class ToDoListFragment extends Fragment {
         }
 
 
+        if (AuthFragment.mFirstEnter){
 
+            firebaseStartSync();
 
-        updateUI();
+        }else updateUI();
+
+        //updateUI();
 
         PollService.setServiceAlarm(getActivity(),true);
 
@@ -203,6 +208,32 @@ public class ToDoListFragment extends Fragment {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    public void firebaseStartSync(){
+        mFirebaseDatabaseRef = FirebaseDatabase.getInstance().getReference(mAuth.getCurrentUser().getUid()).child(ToDoTable.NAME);
+
+        mFirebaseDatabaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    ToDo toDo;
+                    toDo = snapshot.getValue(ToDo.class);
+                    ToDoLab.get(getContext()).addToDo(toDo, ToDoTable.NAME);
+                }
+            updateUI();
+                AuthFragment.mFirstEnter = false;
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+
+        });
+
+
     }
 
     private void updateSubtitle(){

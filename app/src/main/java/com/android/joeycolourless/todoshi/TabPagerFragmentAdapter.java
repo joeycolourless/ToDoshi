@@ -7,9 +7,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import com.android.joeycolourless.todoshi.Fragments.ToDoListCompletedFragment;
 import com.android.joeycolourless.todoshi.Fragments.ToDoListFragment;
 
-/**
- * Created by admin on 27.03.2017.
- */
+
 
 public class TabPagerFragmentAdapter extends FragmentPagerAdapter {
     private String[] tabs;
