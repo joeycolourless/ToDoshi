@@ -101,6 +101,8 @@ public class ToDoLab {
         ContentValues values = new ContentValues();
         values.put(ToDoTable.Cols.UUID, toDo.getId().toString());
         values.put(ToDoTable.Cols.IDFB, toDo.getIdFirebase());
+        values.put(ToDODbSchema.ToDoDeletedTable.Cols.USER, toDo.getUser());
+        values.put(ToDODbSchema.ToDoDeletedTable.Cols.TABLE, toDo.getTable());
 
         return values;
     }
@@ -265,12 +267,17 @@ public class ToDoLab {
         }else
             switch (firebaseOption){
                 case DELETE:
+                    toDo.setUser(mAuth.getUid());
+                    toDo.setTable(tableName);
                     addToDo(toDo, ToDODbSchema.ToDoDeletedTable.NAME);
 
             }
 
     }
-    //The method add objects from Firebase into SQLite
+    //Method for delete from firebase if task was deleted from SQLite without internet
+    public void firebaseDeleteToDo(ToDo toDo){
+        mFirebaseDatebaseRef = FirebaseDatabase.getInstance().getReference(toDo.getUser()).child(toDo.getTable());
+    }
 
 
 

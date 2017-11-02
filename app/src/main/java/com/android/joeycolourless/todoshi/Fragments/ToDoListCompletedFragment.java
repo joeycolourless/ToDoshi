@@ -16,10 +16,17 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.android.joeycolourless.todoshi.R;
+import com.android.joeycolourless.todoshi.StartActivity;
 import com.android.joeycolourless.todoshi.ToDo;
 import com.android.joeycolourless.todoshi.ToDoLab;
 import com.android.joeycolourless.todoshi.ToDoPagerActivity;
 import com.android.joeycolourless.todoshi.datebase.ToDODbSchema;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
 
@@ -28,6 +35,8 @@ public class ToDoListCompletedFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private TextView mTextView;
     private ToDoAdapter mAdapter;
+    private DatabaseReference mFirebaseDatabaseRef;
+    private FirebaseAuth mAuth;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -58,14 +67,38 @@ public class ToDoListCompletedFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_todo_list_completed, container, false);
 
+        mAuth = FirebaseAuth.getInstance();
+
         mRecyclerView = (RecyclerView) view.findViewById(R.id.todo_recycler_view_completed);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         mTextView = (TextView) view.findViewById(R.id.text_view_todo_fragment_completed_label);
         mTextView.setVisibility(View.INVISIBLE);
 
+        if (StartActivity.mFirstEnter){
+            mFirebaseDatabaseRef = FirebaseDatabase.getInstance().getReference(mAuth.getCurrentUser().getUid()).child(ToDODbSchema.ToDoCompletedTable.NAME);
+            mFirebaseDatabaseRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                        ToDo toDo;
+                        toDo = snapshot.getValue(ToDo.class);
+                        ToDoLab.get(getContext()).addToDo(toDo, ToDODbSchema.ToDoCompletedTable.NAME);
+                    }
+                    updateUI();
+                }
 
-        updateUI();
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+        }else {
+            updateUI();
+        }
+
+
+
         return view;
     }
 

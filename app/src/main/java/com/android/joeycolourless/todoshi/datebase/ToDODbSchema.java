@@ -41,5 +41,10 @@ public class ToDODbSchema {
 
     public static final class ToDoDeletedTable{
         public static final String NAME = "deletedToDos";
+
+        public static final class Cols{
+            public static final String USER = "user";
+            public static final String TABLE = "table";
+        }
     }
 }

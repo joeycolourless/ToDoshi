@@ -19,6 +19,8 @@ public class ToDo implements Cloneable{
     private Date mDate;
     private Date mNotificationDate;
     private String mIdFirebase;
+    private String mUser;
+    private String mTable;
     private boolean mPriority;
     private boolean mFinish;
     private boolean mNotification;
@@ -197,5 +199,21 @@ public class ToDo implements Cloneable{
 
     public void setIdFirebase(String mIdFirebase) {
         this.mIdFirebase = mIdFirebase;
+    }
+
+    public String getUser() {
+        return mUser;
+    }
+
+    public void setUser(String mUser) {
+        this.mUser = mUser;
+    }
+
+    public String getTable() {
+        return mTable;
+    }
+
+    public void setTable(String mTable) {
+        this.mTable = mTable;
     }
 }

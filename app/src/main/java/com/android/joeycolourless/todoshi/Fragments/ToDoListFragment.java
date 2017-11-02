@@ -204,6 +204,8 @@ public class ToDoListFragment extends Fragment {
                 updateSubtitle();
                 return true;
             case R.id.menu_item_logout:
+                ToDoLab.get(getContext()).deleteAllToDos(ToDoTable.NAME);
+                ToDoLab.get(getContext()).deleteAllToDos(ToDODbSchema.ToDoCompletedTable.NAME);
                 mAuth.signOut();
                 getActivity().finish();
             default:

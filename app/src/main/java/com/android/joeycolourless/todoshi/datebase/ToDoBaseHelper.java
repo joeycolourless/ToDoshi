@@ -48,7 +48,8 @@ public class ToDoBaseHelper extends SQLiteOpenHelper {
         db.execSQL("create table " + ToDoDeletedTable.NAME + "(" +
                 " _id integer primary key autoincrement, " +
                 ToDoTable.Cols.UUID + ", " +
-                ToDoTable.Cols.IDFB +
+                ToDoTable.Cols.IDFB + " ," +
+                ToDoDeletedTable.Cols.USER +
                 ")"
         );
 

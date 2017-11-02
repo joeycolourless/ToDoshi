@@ -105,6 +105,15 @@ public class PollService extends IntentService {
 
         sendBroadcast(new Intent(ACTION_SHOW_NOTIFICATION));
 
+        if (StartActivity.isOnline(context)){
+            toDos = ToDoLab.get(context).getToDos(ToDODbSchema.ToDoDeletedTable.NAME);
+            if (toDos.size() != 0){
+                for (ToDo toDo: toDos){
+                    ToDoLab.get(context).firebaseDeleteToDo(toDo);
+                }
+            }
+        }
+
 
     }
 }

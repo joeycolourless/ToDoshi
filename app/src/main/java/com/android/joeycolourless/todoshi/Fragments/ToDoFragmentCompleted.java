@@ -91,6 +91,7 @@ public class ToDoFragmentCompleted extends Fragment {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 mToDo.setComments(s.toString());
+                mToDo.setSync(ToDoLab.ADD_SYNC);
                 ToDoLab.get(getContext()).updateToDo(mToDo, ToDODbSchema.ToDoCompletedTable.NAME, ToDODbSchema.ToDoCompletedTable.Cols.UUID, mToDo.getSync());
             }
 

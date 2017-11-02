@@ -74,10 +74,11 @@ public class ToDoCursorWrapper extends CursorWrapper {
     public ToDo getDeletedToDo(){
         String uuidString = getString(getColumnIndex(ToDoCompletedTable.Cols.UUID));
         String idFB = getString(getColumnIndex(ToDoTable.Cols.IDFB));
+        String user = getString(getColumnIndex(ToDoDeletedTable.Cols.USER));
 
         ToDo toDo = new ToDo(UUID.fromString(uuidString));
         toDo.setIdFirebase(idFB);
-
+        toDo.setUser(user);
         return toDo;
     }
 }
