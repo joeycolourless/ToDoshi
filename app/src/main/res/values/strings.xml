@@ -60,4 +60,5 @@
     <string name="fb_login_protocol_scheme">fb120073335327237</string>
     <string name="logout">LogOut</string>
     <string name="default_token">14797687985-j52bpkdujebgl02anpobmca2tco4cmgr.apps.googleusercontent.com</string>
+    <string name="press_again_to_exit">Press again to exit</string>
 </resources>

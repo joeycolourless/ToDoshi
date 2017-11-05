@@ -213,6 +213,8 @@ public class ToDoListFragment extends Fragment {
         }
     }
 
+
+
     public void firebaseStartSync(){
         mFirebaseDatabaseRef = FirebaseDatabase.getInstance().getReference(mAuth.getCurrentUser().getUid()).child(ToDoTable.NAME);
 

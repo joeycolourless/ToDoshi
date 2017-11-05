@@ -3,21 +3,22 @@ package com.android.joeycolourless.todoshi;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
+import android.widget.Toast;
+
 import com.android.joeycolourless.todoshi.Fragments.ToDoFragment;
 import com.android.joeycolourless.todoshi.Fragments.ToDoListFragment;
 import com.android.joeycolourless.todoshi.datebase.ToDODbSchema;
+import com.google.firebase.auth.FirebaseAuth;
 
 
 public class ToDoListActivity extends SingleFragmentActivity implements ToDoListFragment.Callbacks, ToDoFragment.Callbacks {
 
-    public static final String FIRST_ENTER = "first_enter";
 
-    public static Intent newInstance(boolean firstEnter, Context context){
-        Intent intent = new Intent(context, ToDoListActivity.class);
-        intent.putExtra(FIRST_ENTER, firstEnter);
-        return intent;
 
-    }
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private int count = 0;
+
+
     @Override
     protected Fragment createFragment() {
 
@@ -51,6 +52,20 @@ public class ToDoListActivity extends SingleFragmentActivity implements ToDoList
 
     }
 
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
+        if (count == 0){
+            if (mAuth.getCurrentUser() != null){
+                Toast.makeText(this, R.string.press_again_to_exit, Toast.LENGTH_SHORT).show();
+                count++;
+            }
+        }else{
+            count = 0;
+            setResult(RESULT_OK);
+            this.finish();
+        }
+    }
 
     @Override
     public boolean isTablet() {

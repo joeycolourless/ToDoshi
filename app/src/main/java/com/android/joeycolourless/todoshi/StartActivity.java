@@ -48,6 +48,7 @@ public class StartActivity extends FragmentActivity{
     public static boolean mFirstEnter = false;
     private final int RC_SIGN_IN = 0;
     private final String TAG = "tag";
+    private final int EXIT_ACTION = 1;
 
     @Override
     protected void onStart() {
@@ -68,8 +69,8 @@ public class StartActivity extends FragmentActivity{
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user != null) {
                     // User is signed in
-
-                    startActivity(ToDoListActivity.newInstance(mFirstEnter, getApplicationContext()));
+                    Intent intent = new Intent(getContext(),ToDoListActivity.class);
+                    startActivityForResult(intent, EXIT_ACTION);
 
                 } else {
                     // User is signed out
@@ -187,6 +188,12 @@ public class StartActivity extends FragmentActivity{
                 // Google Sign In failed, update UI appropriately
                 // ...
             }
+        }
+        if (requestCode == EXIT_ACTION) {
+            if (resultCode == RESULT_OK){
+                this.finish();
+            }
+
         }
     }
 
