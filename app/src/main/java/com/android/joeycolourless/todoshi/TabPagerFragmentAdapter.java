@@ -11,7 +11,9 @@ import com.android.joeycolourless.todoshi.Fragments.ToDoListFragment;
 
 public class TabPagerFragmentAdapter extends FragmentPagerAdapter {
     private String[] tabs;
-    FragmentManager mFragmentManager;
+    private FragmentManager mFragmentManager;
+
+
 
     public TabPagerFragmentAdapter(FragmentManager fm) {
         super(fm);

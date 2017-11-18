@@ -9,6 +9,7 @@ import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 
+import com.android.joeycolourless.todoshi.R;
 import com.android.joeycolourless.todoshi.ToDo;
 import com.android.joeycolourless.todoshi.ToDoLab;
 
@@ -48,7 +49,7 @@ public class DialogWindow extends DialogFragment {
         return new AlertDialog.Builder(getActivity())
 
                 .setMessage(getArguments().getString(ARG_TEXT_ID))
-                .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.dialog_button_yes, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         UUID id = (UUID) getArguments().getSerializable(ARG_ID);
@@ -58,7 +59,7 @@ public class DialogWindow extends DialogFragment {
                         sendResult(Activity.RESULT_OK, true);
                     }
                 })
-                .setNegativeButton(android.R.string.no, null)
+                .setNegativeButton(R.string.dialog_button_no, null)
 
                 .create();
 

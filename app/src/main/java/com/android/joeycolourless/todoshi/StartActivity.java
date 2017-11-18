@@ -10,6 +10,8 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -50,6 +52,11 @@ public class StartActivity extends FragmentActivity{
     private final String TAG = "tag";
     private final int EXIT_ACTION = 1;
 
+    private int fieldLength;
+    private int currentLengthEmail;
+    private int currentLengthPass;
+    private int previousCharLenght;
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -81,6 +88,37 @@ public class StartActivity extends FragmentActivity{
         };
 
         final EditText email = (EditText) findViewById(R.id.editText_email_auth_fragment);
+        currentLengthEmail = email.getWidth();
+        previousCharLenght = 17;
+        email.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                Log.d(TAG, "Length" + fieldLength);
+                fieldLength = email.getWidth();
+                if (s.length() > 17 && s.length() > previousCharLenght) {
+                    email.setWidth(email.getWidth() + 9);
+                    previousCharLenght = s.length();
+                    return;
+                }
+                if (s.length() > 17 && s.length() < previousCharLenght){
+                    email.setWidth(email.getWidth() - 9);
+                    previousCharLenght = s.length();
+                }
+
+
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
 
         final EditText password = (EditText) findViewById(R.id.editText_password_auth_fragment);
 

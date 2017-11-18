@@ -61,4 +61,10 @@
     <string name="logout">LogOut</string>
     <string name="default_token">14797687985-j52bpkdujebgl02anpobmca2tco4cmgr.apps.googleusercontent.com</string>
     <string name="press_again_to_exit">Press again to exit</string>
+    <string name="dialog_button_yes">Yes</string>
+    <string name="dialog_button_no">No</string>
+    <string name="dialog_button_cancel">Cancel</string>
+    <string name="you_can_leave_comment_for_done_task">You can leave comment for done task</string>
+    <string name="success_button">Success</string>
+    <string name="fail_button">Fail</string>
 </resources>
