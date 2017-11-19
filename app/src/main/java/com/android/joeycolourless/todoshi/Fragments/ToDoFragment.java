@@ -351,6 +351,7 @@ public class ToDoFragment extends Fragment implements OnBackPressedListener {
         });
 
         CheckBox priorityCheckBox = (CheckBox) v.findViewById(R.id.todo_priority);
+
         priorityCheckBox.setChecked(mToDo.isPriority());
         priorityCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -361,7 +362,10 @@ public class ToDoFragment extends Fragment implements OnBackPressedListener {
             }
         });
 
-        CheckBox notificationCheckbox = (CheckBox) v.findViewById(R.id.checkbox_todo_notification);
+        final CheckBox notificationCheckbox = (CheckBox) v.findViewById(R.id.checkbox_todo_notification);
+        if (mToDo.getNotificationDate().getTime() < mToDo.getDate().getTime()){
+            notificationCheckbox.setEnabled(false);
+        }
         notificationCheckbox.setChecked(mToDo.isNotification());
         notificationCheckbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -400,6 +404,7 @@ public class ToDoFragment extends Fragment implements OnBackPressedListener {
 
 
                 mDateButton.setText(simpleDateFormat.format(date));
+                notificationCheckbox.setEnabled(true);
                 //updateToDo();
             }
 

@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.joeycolourless.todoshi.R;
@@ -145,7 +146,7 @@ public class ToDoListCompletedFragment extends Fragment {
                 itemView.setOnClickListener(this);
                 mTitleTextView = (TextView) itemView.findViewById(R.id.list_item_todo_title_text_view);
                 mDateTextView = (TextView) itemView.findViewById(R.id.list_item_todo_date_text_view);
-                mPriorityCheckBox = (CheckBox) itemView.findViewById(R.id.list_item_todo_priority_check_box);
+                //mPriorityCheckBox = (CheckBox) itemView.findViewById(R.id.list_item_todo_priority_check_box);
             }
 
             public void bindToDo(ToDo toDo) {
@@ -153,8 +154,8 @@ public class ToDoListCompletedFragment extends Fragment {
                 mTitleTextView.setText(mToDo.getTitle());
 
 
-                mPriorityCheckBox.setChecked(mToDo.isPriority());
-                mPriorityCheckBox.setEnabled(false);
+                //mPriorityCheckBox.setChecked(mToDo.isPriority());
+               // mPriorityCheckBox.setEnabled(false);
             }
 
             @Override

@@ -1,6 +1,8 @@
 package com.android.joeycolourless.todoshi.Fragments;
 
 import android.content.Context;
+import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -16,7 +18,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.joeycolourless.todoshi.PollService;
@@ -270,8 +272,10 @@ public class ToDoListFragment extends Fragment {
                 }else {
                     if (toDo.getNotificationDate().getTime() < (new Date().getTime() - (toDo.getNotificationDate().getTime() - new Date().getTime()))) {
                         Log.i(TAG, "Times: " + toDo.getNotificationDate().getTime() + "  " + new Date().getTime());
+                        toDo.setSuccess(false);
                         ToDoLab.get(getActivity()).addToDo(toDo, ToDODbSchema.ToDoCompletedTable.NAME);
-                        ToDoLab.get(getActivity()).deleteToDo(toDo, ToDoTable.NAME, ToDoTable.Cols.UUID);
+                        ToDoLab.get(getActivity()).updateToDo(toDo, ToDODbSchema.ToDoCompletedTable.NAME, ToDODbSchema.ToDoCompletedTable.Cols.UUID, ToDoLab.ADD_SYNC);
+                        ToDoLab.get(getActivity()).deleteToDo(toDo, ToDODbSchema.ToDoTable.NAME, ToDODbSchema.ToDoTable.Cols.UUID);
                     }
                 }
             }
@@ -295,7 +299,9 @@ public class ToDoListFragment extends Fragment {
 
         private TextView mTitleTextView;
         private TextView mDateTextView;
-        private CheckBox mPriorityCheckBox;
+        //private CheckBox mPriorityCheckBox;
+        private ImageView mNotificationStatusImage;
+        private ImageView mPriorityStatusImage;
         private ToDo mToDo;
 
         public ToDoHolder(View itemView) {
@@ -303,7 +309,9 @@ public class ToDoListFragment extends Fragment {
             itemView.setOnClickListener(this);
             mTitleTextView = (TextView) itemView.findViewById(R.id.list_item_todo_title_text_view);
             mDateTextView = (TextView) itemView.findViewById(R.id.list_item_todo_date_text_view);
-            mPriorityCheckBox = (CheckBox) itemView.findViewById(R.id.list_item_todo_priority_check_box);
+            //mPriorityCheckBox = (CheckBox) itemView.findViewById(R.id.list_item_todo_priority_check_box);
+            mNotificationStatusImage = (ImageView) itemView.findViewById(R.id.notification_status_image_view);
+            mPriorityStatusImage = (ImageView) itemView.findViewById(R.id.priority_status_image_view);
         }
 
         public void bindToDo(ToDo toDo){
@@ -316,9 +324,18 @@ public class ToDoListFragment extends Fragment {
                 mDateTextView.setText(simpleDateFormat.format(mToDo.getNotificationDate()));
                 //mDateTextView.setText(mToDo.getNotificationDate().toString());
             }
+            if (mToDo.isPriority()){
+                mPriorityStatusImage.setVisibility(View.VISIBLE);
+            }else {
+                mPriorityStatusImage.setVisibility(View.INVISIBLE);
+            }
+            if (mToDo.isNotification()){
 
-            mPriorityCheckBox.setChecked(mToDo.isPriority());
-            mPriorityCheckBox.setEnabled(false);
+                mNotificationStatusImage.setImageResource(R.drawable.ic_notifications_active_black_24dp);
+
+            }else{
+                mNotificationStatusImage.setImageResource(R.drawable.ic_notifications_off_black_24dp);
+            }
 
         }
 

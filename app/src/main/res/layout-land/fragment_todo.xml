@@ -53,6 +53,7 @@
         />
 
     <LinearLayout
+        android:id="@+id/checkboxes_container"
      android:layout_width="match_parent"
      android:layout_height="wrap_content"
      android:layout_below="@+id/todo_date"
@@ -74,6 +75,11 @@
 
         />
  </LinearLayout>
-
+    <Button
+        android:id="@+id/done_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/checkboxes_container"
+        android:text="@string/done"/>
 </RelativeLayout>
     </ScrollView>
