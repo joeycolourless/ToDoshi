@@ -67,4 +67,7 @@
     <string name="you_can_leave_comment_for_done_task">You can leave comment for done task</string>
     <string name="success_button">Success</string>
     <string name="fail_button">Fail</string>
+    <string name="please_confirm_the_password">Please confirm the password</string>
+    <string name="go">Go</string>
+    <string name="back">Back</string>
 </resources>

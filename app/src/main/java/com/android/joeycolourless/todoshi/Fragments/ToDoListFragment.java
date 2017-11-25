@@ -273,9 +273,7 @@ public class ToDoListFragment extends Fragment {
                     if (toDo.getNotificationDate().getTime() < (new Date().getTime() - (toDo.getNotificationDate().getTime() - new Date().getTime()))) {
                         Log.i(TAG, "Times: " + toDo.getNotificationDate().getTime() + "  " + new Date().getTime());
                         toDo.setSuccess(false);
-                        ToDoLab.get(getActivity()).addToDo(toDo, ToDODbSchema.ToDoCompletedTable.NAME);
-                        ToDoLab.get(getActivity()).updateToDo(toDo, ToDODbSchema.ToDoCompletedTable.NAME, ToDODbSchema.ToDoCompletedTable.Cols.UUID, ToDoLab.ADD_SYNC);
-                        ToDoLab.get(getActivity()).deleteToDo(toDo, ToDODbSchema.ToDoTable.NAME, ToDODbSchema.ToDoTable.Cols.UUID);
+                        ToDoLab.get(getActivity()).doneToDo(toDo);
                     }
                 }
             }

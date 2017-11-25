@@ -47,15 +47,19 @@ public class StartActivity extends FragmentActivity{
     private Button signUpButton;
     private Button guestButton;
 
+    private EditText passConfirmET;
+    private EditText password;
+    private EditText email;
+
     public static boolean mFirstEnter = false;
     private final int RC_SIGN_IN = 0;
     private final String TAG = "tag";
     private final int EXIT_ACTION = 1;
 
     private int fieldLength;
-    private int currentLengthEmail;
-    private int currentLengthPass;
-    private int previousCharLenght;
+
+    private int previousCharLength;
+    private boolean isSignUp = false;
 
     @Override
     protected void onStart() {
@@ -87,9 +91,8 @@ public class StartActivity extends FragmentActivity{
             }
         };
 
-        final EditText email = (EditText) findViewById(R.id.editText_email_auth_fragment);
-        currentLengthEmail = email.getWidth();
-        previousCharLenght = 17;
+        email = (EditText) findViewById(R.id.editText_email_auth_fragment);
+        previousCharLength = 17;
         email.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -100,14 +103,14 @@ public class StartActivity extends FragmentActivity{
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 Log.d(TAG, "Length" + fieldLength);
                 fieldLength = email.getWidth();
-                if (s.length() > 17 && s.length() > previousCharLenght) {
+                if (s.length() > 17 && s.length() > previousCharLength) {
                     email.setWidth(email.getWidth() + 9);
-                    previousCharLenght = s.length();
+                    previousCharLength = s.length();
                     return;
                 }
-                if (s.length() > 17 && s.length() < previousCharLenght){
+                if (s.length() > 17 && s.length() < previousCharLength){
                     email.setWidth(email.getWidth() - 9);
-                    previousCharLenght = s.length();
+                    previousCharLength = s.length();
                 }
 
 
@@ -120,38 +123,70 @@ public class StartActivity extends FragmentActivity{
             }
         });
 
-        final EditText password = (EditText) findViewById(R.id.editText_password_auth_fragment);
+        password = (EditText) findViewById(R.id.editText_password_auth_fragment);
 
         signInButton = (Button) findViewById(R.id.button_signIn_auth_fragment);
         signInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                try {
-                    if ( email.getText().toString().equals("") || password.getText().toString().equals("")){
-                        errorMassage(getString(R.string.one_of_the_field_empty));
-                    }else{
-                        mFirstEnter = true;
-                        mAuth = ToDoLab.get(getContext()).signInUser(email.getText().toString(), password.getText().toString(), StartActivity.this);
-                    }
-
-
-                } catch (Exception e) {
-                    errorMassage(getString(R.string.something_wrong_maybe_internet));
+                if (isSignUp){
                     updateUI(getContext());
+                }else {
+                    try {
+                        if ( email.getText().toString().equals("") || password.getText().toString().equals("")){
+                            errorMassage(getString(R.string.one_of_the_field_empty));
+                        }else{
+                            mFirstEnter = true;
+                            mAuth = ToDoLab.get(getContext()).signInUser(email.getText().toString(), password.getText().toString(), StartActivity.this);
+                        }
+
+
+                    } catch (Exception e) {
+                        errorMassage(getString(R.string.something_wrong_maybe_internet));
+                        updateUI(getContext());
+                    }
                 }
+
             }
         });
+
+        passConfirmET = (EditText) findViewById(R.id.editText_password_confirm);
 
         signUpButton = (Button) findViewById(R.id.button_signUp_auth_fragment);
         signUpButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                try {
-                    mAuth = ToDoLab.get(getContext()).signUpUser(email.getText().toString(), password.getText().toString(), StartActivity.this);
-                }catch (Exception e){
-                    errorMassage(getString(R.string.something_wrong_maybe_internet));
-                    updateUI(getContext());
+                if (isSignUp){
+                    if (password.getText().toString().equals(passConfirmET.getText().toString())) {
+
+                        try {
+                            if ( email.getText().toString().equals("") || password.getText().toString().equals("") || passConfirmET.getText().toString().equals("")) {
+                                errorMassage("Some field is empty");
+                            }else {
+                                mAuth = ToDoLab.get(getContext()).signUpUser(email.getText().toString(), password.getText().toString(), StartActivity.this);
+                            }
+
+
+                        } catch (Exception e) {
+                            errorMassage(getString(R.string.something_wrong_maybe_internet));
+
+                                updateUI(getContext());
+
+
+                        }
+                    }else {
+                        Toast.makeText(getContext(), "Password are not same", Toast.LENGTH_SHORT).show();
+                    }
+                }else {
+                    isSignUp = true;
+                    signInButton.setText(R.string.back);
+                    passConfirmET.setVisibility(View.VISIBLE);
+                    passConfirmET.setCursorVisible(true);
+                    passConfirmET.requestFocus();
+                    Toast.makeText(getContext(), R.string.please_confirm_the_password, Toast.LENGTH_SHORT).show();
+                    signUpButton.setText(R.string.go);
                 }
+
             }
         });
 
@@ -231,6 +266,7 @@ public class StartActivity extends FragmentActivity{
             if (resultCode == RESULT_OK){
                 this.finish();
             }
+            updateUI(getContext());
 
         }
     }
@@ -276,6 +312,14 @@ public class StartActivity extends FragmentActivity{
         }else {
             signInButton.setEnabled(true);
             signUpButton.setEnabled(true);
+        }
+        if (isSignUp) {
+            email.setText("");
+            password.setText("");
+            passConfirmET.setVisibility(View.INVISIBLE);
+            isSignUp = false;
+            signInButton.setText(R.string.sign_in);
+            signUpButton.setText(R.string.sign_up);
         }
     }
     private void errorMassage(String text){

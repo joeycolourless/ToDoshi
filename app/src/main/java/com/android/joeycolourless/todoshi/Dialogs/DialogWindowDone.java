@@ -99,9 +99,8 @@ public class DialogWindowDone extends DialogFragment {
 
 
         mToDo.setSuccess(success);
-        ToDoLab.get(getActivity()).addToDo(mToDo, ToDODbSchema.ToDoCompletedTable.NAME);
-        ToDoLab.get(getActivity()).updateToDo(mToDo, ToDODbSchema.ToDoCompletedTable.NAME, ToDODbSchema.ToDoCompletedTable.Cols.UUID, ToDoLab.ADD_SYNC);
-        ToDoLab.get(getActivity()).deleteToDo(mToDo, ToDODbSchema.ToDoTable.NAME, ToDODbSchema.ToDoTable.Cols.UUID);
+        ToDoLab.get(getActivity()).doneToDo(mToDo);
+
         sendResult(Activity.RESULT_OK, true);
 
     }

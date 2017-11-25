@@ -245,6 +245,12 @@ public class ToDoLab {
         mDateBase.update(tableName, values, uuid + " = ?", new String[]{ uuidString});
     }
 
+    public void doneToDo(ToDo toDo){
+        addToDo(toDo, ToDODbSchema.ToDoCompletedTable.NAME);
+        updateToDo(toDo, ToDODbSchema.ToDoCompletedTable.NAME, ToDODbSchema.ToDoCompletedTable.Cols.UUID, ToDoLab.ADD_SYNC);
+        deleteToDo(toDo, ToDODbSchema.ToDoTable.NAME, ToDODbSchema.ToDoTable.Cols.UUID);
+    }
+
     public void firebaseSyncToDO(ToDo toDo, String tableName, int firebaseOption, Context context){
         if (StartActivity.isOnline(context)){
             mFirebaseDatebaseRef = FirebaseDatabase.getInstance().getReference(mAuth.getCurrentUser().getUid()).child(tableName);
