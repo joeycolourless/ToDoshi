@@ -73,6 +73,7 @@ public class ToDoFragment extends Fragment implements OnBackPressedListener {
     private ToDo mToDo;
     private ToDo mToDoWithoutChange;
     private Button mDateButton;
+    private EditText mDetails;
     private Callbacks mCallbacks;
 
     @Override
@@ -315,9 +316,22 @@ public class ToDoFragment extends Fragment implements OnBackPressedListener {
 
             }
         });
-        EditText details = (EditText) v.findViewById(R.id.todo_details);
-        details.setText(mToDo.getDetails());
-        details.addTextChangedListener(new TextWatcher() {
+        mDetails = (EditText) v.findViewById(R.id.todo_details);
+        mDetails.setText(mToDo.getDetails());
+        mDetails.post(new Runnable() {
+            @Override
+            public void run() {
+                if (mDetails.getLineCount() > 1){
+                    mDetails.setMaxLines(mDetails.getLineCount() + 2);
+
+                }
+            }
+        });
+        if (mDetails.getLineCount() > 1){
+            mDetails.setLines(mDetails.getLineCount() + 2);
+
+        }
+        mDetails.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -326,7 +340,10 @@ public class ToDoFragment extends Fragment implements OnBackPressedListener {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 mToDo.setDetails(s.toString());
-                //updateToDo();
+                if (mDetails.getLineCount() > 1 && mDetails.getLineCount() < 10){
+                    mDetails.setMaxLines(mDetails.getLineCount() + 2);
+
+                }
             }
 
             @Override
@@ -334,6 +351,10 @@ public class ToDoFragment extends Fragment implements OnBackPressedListener {
 
             }
         });
+
+
+
+
 
         mDateButton = (Button)v.findViewById(R.id.todo_date);
 

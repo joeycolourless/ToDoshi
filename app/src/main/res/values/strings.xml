@@ -1,9 +1,9 @@
 <resources>
-    <string name="app_name">ToDoshi</string>
+    <string name="app_name">Parchment</string>
     <string name="todo_title_hint">Enter a title for ToDo</string>
     <string name="todo_title_label">Title</string>
     <string name="todo_details_label">Details</string>
-    <string name="todo_detail_hint">Enter details</string>
+    <string name="todo_detail_hint">Enter details (Max 250 symbols)</string>
     <string name="todo_priority_label">Priority?</string>
     <string name="date_picker_title">Red time</string>
     <string name="new_todo">New Task</string>
