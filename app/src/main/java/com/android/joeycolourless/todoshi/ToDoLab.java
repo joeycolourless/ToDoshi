@@ -92,6 +92,7 @@ public class ToDoLab {
         values.put(ToDoCompletedTable.Cols.COMMENTS, toDo.getComments());
         values.put(ToDoTable.Cols.FINISH, toDo.isFinish() ? 1 : 0);
         values.put(ToDoTable.Cols.IDFB, toDo.getIdFirebase());
+        values.put(ToDoTable.Cols.SUCCESS, toDo.isSuccess() ? 1 : 0);
 
 
         return values;

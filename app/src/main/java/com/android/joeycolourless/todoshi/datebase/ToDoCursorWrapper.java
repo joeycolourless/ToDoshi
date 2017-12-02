@@ -29,6 +29,8 @@ public class ToDoCursorWrapper extends CursorWrapper {
         int position = getInt(getColumnIndex(ToDoTable.Cols.POSITION));
         int isNotification = getInt(getColumnIndex(ToDoTable.Cols.NOTIFICATION));
         int isSync = getInt(getColumnIndex(ToDoTable.Cols.SYNC));
+        int isSuccess = getInt(getColumnIndex(ToDoCompletedTable.Cols.SUCCESS));
+
 
 
         ToDo toDo = new ToDo(UUID.fromString(uuidString));
@@ -42,6 +44,8 @@ public class ToDoCursorWrapper extends CursorWrapper {
         toDo.setNotification(isNotification != 0);
         toDo.setSync(isSync);
         toDo.setIdFirebase(idFB);
+        toDo.setSuccess(isSuccess != 0);
+
 
         return toDo;
     }

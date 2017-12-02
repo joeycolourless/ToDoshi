@@ -20,7 +20,7 @@ public class ToDODbSchema {
             public static final String NOTIFICATION = "notification";
             public static final String SYNC = "sync";
             public static final String IDFB = "id_firebase";
-
+            public static final String SUCCESS = "success";
         }
     }
 

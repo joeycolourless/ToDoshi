@@ -307,7 +307,6 @@ public class ToDoListFragment extends Fragment {
             itemView.setOnClickListener(this);
             mTitleTextView = (TextView) itemView.findViewById(R.id.list_item_todo_title_text_view);
             mDateTextView = (TextView) itemView.findViewById(R.id.list_item_todo_date_text_view);
-            //mPriorityCheckBox = (CheckBox) itemView.findViewById(R.id.list_item_todo_priority_check_box);
             mNotificationStatusImage = (ImageView) itemView.findViewById(R.id.notification_status_image_view);
             mPriorityStatusImage = (ImageView) itemView.findViewById(R.id.priority_status_image_view);
         }

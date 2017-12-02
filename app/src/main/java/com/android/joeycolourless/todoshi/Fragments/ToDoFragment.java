@@ -181,6 +181,8 @@ public class ToDoFragment extends Fragment implements OnBackPressedListener {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
 
+
+
         UUID toDoId = (UUID) getArguments().getSerializable(ARG_TODO_ID);
         mToDo = ToDoLab.get(getActivity()).getTodo(toDoId, ToDoTable.NAME, ToDoTable.Cols.UUID);
         try {

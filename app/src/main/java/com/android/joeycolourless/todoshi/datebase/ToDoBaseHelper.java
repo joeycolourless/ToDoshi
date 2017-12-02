@@ -30,7 +30,8 @@ public class ToDoBaseHelper extends SQLiteOpenHelper {
             ToDoTable.Cols.SYNC + ", " +
             ToDoTable.Cols.NOTIFICATION_DATE + ", "+
             ToDoTable.Cols.IDFB + ", " +
-            ToDoTable.Cols.NOTIFICATION  +  ")"
+            ToDoTable.Cols.NOTIFICATION + ", "  +
+            ToDoTable.Cols.SUCCESS +    ")"
         );
         db.execSQL("create table " + ToDoCompletedTable.NAME + "(" +
                 " _id integer primary key autoincrement, " +

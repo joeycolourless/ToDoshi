@@ -70,4 +70,5 @@
     <string name="please_confirm_the_password">Please confirm the password</string>
     <string name="go">Go</string>
     <string name="back">Back</string>
+    <string name="no_details">No details</string>
 </resources>

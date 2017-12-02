@@ -12,8 +12,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.joeycolourless.todoshi.R;
@@ -136,26 +134,34 @@ public class ToDoListCompletedFragment extends Fragment {
 
     private class ToDoHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
             private TextView mTitleTextView;
-            private TextView mDateTextView;
-            private CheckBox mPriorityCheckBox;
+            private TextView mDetailsTextView;
+            private TextView mSuccessTextView;
             private ToDo mToDo;
 
 
             public ToDoHolder(View itemView) {
                 super(itemView);
                 itemView.setOnClickListener(this);
-                mTitleTextView = (TextView) itemView.findViewById(R.id.list_item_todo_title_text_view);
-                mDateTextView = (TextView) itemView.findViewById(R.id.list_item_todo_date_text_view);
-                //mPriorityCheckBox = (CheckBox) itemView.findViewById(R.id.list_item_todo_priority_check_box);
+                mTitleTextView = (TextView) itemView.findViewById(R.id.textview_title_todo);
+                mDetailsTextView = (TextView) itemView.findViewById(R.id.textview_details_todo);
+                mSuccessTextView = (TextView) itemView.findViewById(R.id.textview_success_todo);
             }
 
             public void bindToDo(ToDo toDo) {
                 mToDo = toDo;
                 mTitleTextView.setText(mToDo.getTitle());
+                if (mToDo.getDetails().equals("") || mToDo.getDetails() == null){
+                    mDetailsTextView.setText(R.string.no_details);
+                }else mDetailsTextView.setText(mToDo.getDetails());
+                if (mToDo.isSuccess()){
+                    mSuccessTextView.setText(R.string.success_button);
+                    mSuccessTextView.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
+                }else{
+                    mSuccessTextView.setText(R.string.fail_button);
+                    mSuccessTextView.setTextColor(getResources().getColor((R.color.red)));
+                }
 
 
-                //mPriorityCheckBox.setChecked(mToDo.isPriority());
-               // mPriorityCheckBox.setEnabled(false);
             }
 
             @Override
@@ -192,7 +198,7 @@ public class ToDoListCompletedFragment extends Fragment {
         @Override
         public ToDoHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             LayoutInflater layoutInflater = LayoutInflater.from(getActivity());
-            View view = layoutInflater.inflate(R.layout.list_item_todo, parent, false);
+            View view = layoutInflater.inflate(R.layout.list_item_completed_todo, parent, false);
             return new ToDoHolder(view);
         }
 

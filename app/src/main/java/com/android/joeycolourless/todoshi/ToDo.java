@@ -47,6 +47,7 @@ public class ToDo implements Cloneable{
     public ToDo(UUID id){
         mId = id;
         mTitle = "";
+        mDetails = "";
         mIdFirebase = FirebaseDatabase.getInstance().getReference(mAuth.getCurrentUser().getUid()).child(ToDODbSchema.ToDoTable.NAME).push().getKey();
         mDate = new Date();
         mNotificationDate = null;
@@ -147,10 +148,6 @@ public class ToDo implements Cloneable{
 
     public void setPosition(int position) {
         mPosition = position;
-    }
-
-    public String getPhotoFilename(){
-        return "IMG_" + getId().toString()+ ".jpg";
     }
 
     public String getComments() {

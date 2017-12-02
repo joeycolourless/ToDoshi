@@ -165,14 +165,9 @@ public class StartActivity extends FragmentActivity{
                             }else {
                                 mAuth = ToDoLab.get(getContext()).signUpUser(email.getText().toString(), password.getText().toString(), StartActivity.this);
                             }
-
-
                         } catch (Exception e) {
                             errorMassage(getString(R.string.something_wrong_maybe_internet));
-
                                 updateUI(getContext());
-
-
                         }
                     }else {
                         Toast.makeText(getContext(), "Password are not same", Toast.LENGTH_SHORT).show();
@@ -199,6 +194,7 @@ public class StartActivity extends FragmentActivity{
 
             }
         });
+        guestButton.setEnabled(false);
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_token))
