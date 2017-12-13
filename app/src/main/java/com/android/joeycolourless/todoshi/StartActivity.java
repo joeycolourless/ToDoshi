@@ -104,12 +104,12 @@ public class StartActivity extends FragmentActivity{
                 Log.d(TAG, "Length" + fieldLength);
                 fieldLength = email.getWidth();
                 if (s.length() > 17 && s.length() > previousCharLength) {
-                    email.setWidth(email.getWidth() + 9);
+                    email.setWidth(email.getWidth() + 10);
                     previousCharLength = s.length();
                     return;
                 }
                 if (s.length() > 17 && s.length() < previousCharLength){
-                    email.setWidth(email.getWidth() - 9);
+                    email.setWidth(email.getWidth() - 10);
                     previousCharLength = s.length();
                 }
 
@@ -139,14 +139,11 @@ public class StartActivity extends FragmentActivity{
                             mFirstEnter = true;
                             mAuth = ToDoLab.get(getContext()).signInUser(email.getText().toString(), password.getText().toString(), StartActivity.this);
                         }
-
-
                     } catch (Exception e) {
                         errorMassage(getString(R.string.something_wrong_maybe_internet));
                         updateUI(getContext());
                     }
                 }
-
             }
         });
 
@@ -158,7 +155,6 @@ public class StartActivity extends FragmentActivity{
             public void onClick(View view) {
                 if (isSignUp){
                     if (password.getText().toString().equals(passConfirmET.getText().toString())) {
-
                         try {
                             if ( email.getText().toString().equals("") || password.getText().toString().equals("") || passConfirmET.getText().toString().equals("")) {
                                 errorMassage("Some field is empty");
@@ -189,12 +185,11 @@ public class StartActivity extends FragmentActivity{
         guestButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getContext(), ToDoListActivity.class);
-                startActivity(intent);
+                Toast.makeText(StartActivity.this, R.string.you_cant_be_a_guest, Toast.LENGTH_SHORT).show();
 
             }
         });
-        guestButton.setEnabled(false);
+
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_token))

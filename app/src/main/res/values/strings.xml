@@ -71,4 +71,10 @@
     <string name="go">Go</string>
     <string name="back">Back</string>
     <string name="no_details">No details</string>
+    <string name="today">Today</string>
+    <string name="daily">Daily</string>
+    <string name="was_entered_less_date_then_now">Was entered less date then now</string>
+    <string name="on_the_next_week">On the next week</string>
+    <string name="you_cant_be_a_guest">You can\'t be a guest, sign in pls</string>
+    <string name="to">to</string>
 </resources>

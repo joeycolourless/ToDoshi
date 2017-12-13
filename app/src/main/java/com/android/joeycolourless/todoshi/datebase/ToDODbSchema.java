@@ -21,6 +21,7 @@ public class ToDODbSchema {
             public static final String SYNC = "sync";
             public static final String IDFB = "id_firebase";
             public static final String SUCCESS = "success";
+            public static final String SHOW_DATE_TEXT_VIEW = "show_date_text_view";
         }
     }
 

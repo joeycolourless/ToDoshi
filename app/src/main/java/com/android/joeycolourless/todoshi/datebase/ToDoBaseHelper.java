@@ -31,6 +31,7 @@ public class ToDoBaseHelper extends SQLiteOpenHelper {
             ToDoTable.Cols.NOTIFICATION_DATE + ", "+
             ToDoTable.Cols.IDFB + ", " +
             ToDoTable.Cols.NOTIFICATION + ", "  +
+            ToDoTable.Cols.SHOW_DATE_TEXT_VIEW + ", " +
             ToDoTable.Cols.SUCCESS +    ")"
         );
         db.execSQL("create table " + ToDoCompletedTable.NAME + "(" +

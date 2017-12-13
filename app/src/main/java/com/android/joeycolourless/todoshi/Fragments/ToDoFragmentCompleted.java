@@ -26,6 +26,8 @@ public class ToDoFragmentCompleted extends Fragment {
 
     private static final String ARG_TODO_ID = "todo_id";
     private ToDo mToDo;
+    private EditText mDetails;
+    private EditText mComment;
 
     public static ToDoFragmentCompleted newInstance(UUID uuid){
         Bundle args = new Bundle();
@@ -69,8 +71,36 @@ public class ToDoFragmentCompleted extends Fragment {
         EditText title = (EditText) view.findViewById(R.id.todo_title);
         title.setText(mToDo.getTitle());
 
-        EditText details = (EditText) view.findViewById(R.id.todo_details);
-        details.setText(mToDo.getDetails());
+        mDetails = (EditText) view.findViewById(R.id.todo_details);
+        mDetails.setText(mToDo.getDetails());
+        mDetails.post(new Runnable() {
+            @Override
+            public void run() {
+                if (mDetails.getLineCount() > 1){
+                    mDetails.setMaxLines(mDetails.getLineCount() + 2);
+
+                }
+            }
+        });
+        mDetails.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (mDetails.getLineCount() > 1){
+                    mDetails.setMaxLines(ToDoFragmentCompleted.this.mDetails.getLineCount() + 2);
+
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
 
         TextView completedTo = (TextView)view.findViewById(R.id.text_view_todo_date_completed);
         if (mToDo.getDate() == null){
@@ -80,9 +110,17 @@ public class ToDoFragmentCompleted extends Fragment {
         }
 
 
-        EditText comment = (EditText)view.findViewById(R.id.todo_comment);
-        comment.setText(mToDo.getComments());
-        comment.addTextChangedListener(new TextWatcher() {
+        mComment = (EditText)view.findViewById(R.id.todo_comment);
+        mComment.setText(mToDo.getComments());
+        mComment.post(new Runnable() {
+            @Override
+            public void run() {
+                if (mComment.getLineCount() > 1){
+                    mComment.setMaxLines(mComment.getLineCount() + 2);
+                }
+            }
+        });
+        mComment.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -90,6 +128,9 @@ public class ToDoFragmentCompleted extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (mComment.getLineCount() > 1){
+                    mComment.setMaxLines(mComment.getLineCount() + 2);
+                }
                 mToDo.setComments(s.toString());
                 mToDo.setSync(ToDoLab.ADD_SYNC);
                 ToDoLab.get(getContext()).updateToDo(mToDo, ToDODbSchema.ToDoCompletedTable.NAME, ToDODbSchema.ToDoCompletedTable.Cols.UUID, mToDo.getSync());

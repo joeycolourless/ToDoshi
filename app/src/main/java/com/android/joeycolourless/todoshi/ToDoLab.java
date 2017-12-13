@@ -6,6 +6,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
+import android.view.View;
 import android.widget.Toast;
 
 import com.android.joeycolourless.todoshi.datebase.ToDODbSchema;
@@ -20,8 +21,10 @@ import com.google.firebase.database.FirebaseDatabase;
 
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -41,10 +44,11 @@ public class ToDoLab {
 
     private Context mContext;
     private SQLiteDatabase mDateBase;
-
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private DatabaseReference mFirebaseDateBaseRef;
 
-    private DatabaseReference mFirebaseDatebaseRef;
+    private ToDo mToDoPrevious;
+    private boolean isOnTheWeek = false;
 
 
     public static ToDoLab get(Context context){
@@ -135,7 +139,7 @@ public class ToDoLab {
         Collections.sort(toDos, new Comparator<ToDo>() {
             @Override
             public int compare(ToDo o1, ToDo o2) {
-                return o1.getDate().compareTo(o2.getDate());
+                return o1.getNotificationDate().compareTo(o2.getNotificationDate());
             }
         });
 
@@ -254,17 +258,17 @@ public class ToDoLab {
 
     public void firebaseSyncToDO(ToDo toDo, String tableName, int firebaseOption, Context context){
         if (StartActivity.isOnline(context)){
-            mFirebaseDatebaseRef = FirebaseDatabase.getInstance().getReference(mAuth.getCurrentUser().getUid()).child(tableName);
+            mFirebaseDateBaseRef = FirebaseDatabase.getInstance().getReference(mAuth.getCurrentUser().getUid()).child(tableName);
             switch (firebaseOption){
                 case NOTHING:
                     break;
                 case ADD_SYNC:
                     toDo.setSync(NOTHING);
                     updateToDo(toDo, tableName, ToDoTable.Cols.UUID);
-                    mFirebaseDatebaseRef.child(toDo.getIdFirebase()).setValue(toDo);
+                    mFirebaseDateBaseRef.child(toDo.getIdFirebase()).setValue(toDo);
                     break;
                 case DELETE:
-                    mFirebaseDatebaseRef.child(toDo.getIdFirebase()).removeValue();
+                    mFirebaseDateBaseRef.child(toDo.getIdFirebase()).removeValue();
                     break;
                 case DONE:
                     break;
@@ -283,7 +287,7 @@ public class ToDoLab {
     }
     //Method for delete from firebase if task was deleted from SQLite without internet
     public void firebaseDeleteToDo(ToDo toDo){
-        mFirebaseDatebaseRef = FirebaseDatabase.getInstance().getReference(toDo.getUser()).child(toDo.getTable());
+        mFirebaseDateBaseRef = FirebaseDatabase.getInstance().getReference(toDo.getUser()).child(toDo.getTable());
     }
 
 
@@ -303,6 +307,7 @@ public class ToDoLab {
             values.put(ToDoTable.Cols.NOTIFICATION_DATE, toDo.getNotificationDate().getTime());
         }
         values.put(ToDoTable.Cols.IDFB, toDo.getIdFirebase());
+        values.put(ToDoTable.Cols.SHOW_DATE_TEXT_VIEW, toDo.isShowDateTextView());
 
         return values;
     }
@@ -358,5 +363,106 @@ public class ToDoLab {
                     }
                 });
         return mAuth;
+    }
+    //Method compares two NotificationDates in two tasks and return true if the same and false if not
+    private boolean dateCompare(Date toDoDate, Date toDoPreviousDate, boolean compareWithTodayDate){
+        Calendar toDoCalendar = Calendar.getInstance();
+        toDoCalendar.setTime(toDoDate);
+
+        Calendar toDoPreviousCalendar = Calendar.getInstance();
+        if (compareWithTodayDate){
+            toDoPreviousCalendar.setTime(new Date());
+        }else toDoPreviousCalendar.setTime(toDoPreviousDate);
+
+        int toDoYear = toDoCalendar.get(Calendar.YEAR);
+        int toDoPreviousYear = toDoPreviousCalendar.get(Calendar.YEAR);
+
+        int toDoDayOfYear = toDoCalendar.get(Calendar.DAY_OF_YEAR);
+        int toDoPreviousDayOfYear = toDoPreviousCalendar.get(Calendar.DAY_OF_YEAR);
+
+        if (toDoYear == toDoPreviousYear){
+            if (toDoDayOfYear == toDoPreviousDayOfYear){
+                return true;
+            }else return false;
+        }
+        return false;
+    }
+    //Method checks is notificationDate longer then seven days from today
+    public boolean isDateMoreThenSevenDays(ToDo toDo){
+        Calendar toDoCalendar = Calendar.getInstance();
+        toDoCalendar.setTime(toDo.getNotificationDate());
+        int toDoDayOfYear = toDoCalendar.get(Calendar.DAY_OF_YEAR);
+
+        Calendar currentDateCalendar = Calendar.getInstance();
+        currentDateCalendar.setTime(new Date());
+        int currentDateDayOfYear = currentDateCalendar.get(Calendar.DAY_OF_YEAR);
+        int result = toDoDayOfYear - currentDateDayOfYear;
+        return result > 7;
+    }
+    //Method scans task and compare with previous task and changing or not variable mSortDateTextView
+    private void isToDoTabWithDateTextView(ToDo toDo, int position){
+        if (position == 0){
+            if (dateCompare(toDo.getNotificationDate(), null, true)){
+                //mSortDateTextView.setText(R.string.today);
+                textViewMarksChangerForToDo(toDo, true);
+                mToDoPrevious = toDo;
+            }else {
+                if (toDo.getNotificationDate().getTime() == 0){
+                    //mSortDateTextView.setText(R.string.daily);
+                    textViewMarksChangerForToDo(toDo, true);
+                }else //mSortDateTextView.setText(simpleDateFormat.format(toDo.getNotificationDate()));
+                    textViewMarksChangerForToDo(toDo, true);
+                mToDoPrevious = toDo;
+            }
+        }else {
+            if (dateCompare(toDo.getNotificationDate(), mToDoPrevious.getNotificationDate(), false)){
+                textViewMarksChangerForToDo(toDo, false);
+                mToDoPrevious = toDo;
+            }else {
+                if (dateCompare(toDo.getNotificationDate(), null, true)){
+                    //mSortDateTextView.setText(R.string.today);
+                    textViewMarksChangerForToDo(toDo, true);
+                }else{
+                    if (isDateMoreThenSevenDays(toDo)){
+                        if (!isOnTheWeek){
+                            //mSortDateTextView.setVisibility(View.VISIBLE);
+                            //mSortDateTextView.setText(R.string.on_the_next_week);
+                            textViewMarksChangerForToDo(toDo, true);
+                            isOnTheWeek = true;
+                        }
+
+                    }else //mSortDateTextView.setText(simpleDateFormat.format(toDo.getNotificationDate()));
+                        textViewMarksChangerForToDo(toDo, true);
+                }
+                mToDoPrevious = toDo;
+            }
+        }
+    }
+    //Method checks need or not to change variable in task
+    private void textViewMarksChangerForToDo(ToDo toDo, boolean showDateTextView) {
+        if (!toDo.isShowDateTextView()) {
+            toDo.setShowDateTextView(showDateTextView);
+            updateToDo(toDo, ToDoTable.NAME, ToDoTable.Cols.UUID, ADD_SYNC);
+        }else {
+            if (!showDateTextView){
+                toDo.setShowDateTextView(showDateTextView);
+                updateToDo(toDo, ToDoTable.NAME, ToDoTable.Cols.UUID, ADD_SYNC);
+            }
+        }
+
+    }
+    //Method reads all tasks and changes variable ToDo.mShowDateTextView if it need
+    public void setTextViewMarksForToDos(){
+        List<ToDo> toDos = getToDos(ToDoTable.NAME);
+        if (toDos.size() == 0){
+            return;
+        }
+        int countPosition = 0;
+        mToDoPrevious = new ToDo();
+        for (ToDo toDo: toDos){
+            isToDoTabWithDateTextView(toDo, countPosition);
+            countPosition++;
+        }
+
     }
 }

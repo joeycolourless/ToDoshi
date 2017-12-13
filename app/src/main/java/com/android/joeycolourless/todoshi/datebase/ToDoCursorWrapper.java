@@ -30,6 +30,7 @@ public class ToDoCursorWrapper extends CursorWrapper {
         int isNotification = getInt(getColumnIndex(ToDoTable.Cols.NOTIFICATION));
         int isSync = getInt(getColumnIndex(ToDoTable.Cols.SYNC));
         int isSuccess = getInt(getColumnIndex(ToDoCompletedTable.Cols.SUCCESS));
+        int isShowDateTextView = getInt(getColumnIndex(ToDoTable.Cols.SHOW_DATE_TEXT_VIEW));
 
 
 
@@ -45,6 +46,7 @@ public class ToDoCursorWrapper extends CursorWrapper {
         toDo.setSync(isSync);
         toDo.setIdFirebase(idFB);
         toDo.setSuccess(isSuccess != 0);
+        toDo.setShowDateTextView(isShowDateTextView != 0);
 
 
         return toDo;

@@ -23,6 +23,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.android.joeycolourless.todoshi.Dialogs.DialogWindow;
 import com.android.joeycolourless.todoshi.Dialogs.DialogWindowDone;
@@ -422,13 +423,17 @@ public class ToDoFragment extends Fragment implements OnBackPressedListener {
         mDateTimeDialogFragment.setOnButtonClickListener(new SwitchDateTimeDialogFragment.OnButtonClickListener() {
             @Override
             public void onPositiveButtonClick(Date date) {
-                mToDo.setNotificationDate(date);
-                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMMM dd, HH:mm"   ,Locale.getDefault());
+                if (date.getTime() < new Date().getTime()){
+                    Toast.makeText(getContext(), R.string.was_entered_less_date_then_now, Toast.LENGTH_LONG).show();
+                }else {
+                    mToDo.setNotificationDate(date);
+                    SimpleDateFormat simpleDateFormat = new SimpleDateFormat("MMMM dd, HH:mm", Locale.getDefault());
 
 
-                mDateButton.setText(simpleDateFormat.format(date));
-                notificationCheckbox.setEnabled(true);
-                //updateToDo();
+                    mDateButton.setText(simpleDateFormat.format(date));
+                    notificationCheckbox.setEnabled(true);
+                    //updateToDo();
+                }
             }
 
             @Override

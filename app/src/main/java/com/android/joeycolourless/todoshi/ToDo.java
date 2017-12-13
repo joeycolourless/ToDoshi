@@ -25,6 +25,7 @@ public class ToDo implements Cloneable{
     private boolean mFinish;
     private boolean mNotification;
     private boolean mSuccess;
+    private boolean mShowDateTextView;
     private int mSync;
 
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -50,11 +51,12 @@ public class ToDo implements Cloneable{
         mDetails = "";
         mIdFirebase = FirebaseDatabase.getInstance().getReference(mAuth.getCurrentUser().getUid()).child(ToDODbSchema.ToDoTable.NAME).push().getKey();
         mDate = new Date();
-        mNotificationDate = null;
+        mNotificationDate = new Date(0);
         mFinish = false;
         mNotification = false;
         mSuccess = false;
         mSync = ToDoLab.ADD_SYNC;
+        mShowDateTextView = false;
     }
 
     @Override
@@ -68,6 +70,7 @@ public class ToDo implements Cloneable{
         if (mFinish != toDo.mFinish) return false;
         if (mNotification != toDo.mNotification) return false;
         if (mSuccess != toDo.mSuccess) return false;
+        if (mShowDateTextView != toDo.mShowDateTextView) return false;
         if (mSync != toDo.mSync) return false;
         if (mPosition != toDo.mPosition) return false;
         if (mId != null ? !mId.equals(toDo.mId) : toDo.mId != null) return false;
@@ -79,8 +82,9 @@ public class ToDo implements Cloneable{
             return false;
         if (mIdFirebase != null ? !mIdFirebase.equals(toDo.mIdFirebase) : toDo.mIdFirebase != null)
             return false;
+        if (mUser != null ? !mUser.equals(toDo.mUser) : toDo.mUser != null) return false;
+        if (mTable != null ? !mTable.equals(toDo.mTable) : toDo.mTable != null) return false;
         return mComments != null ? mComments.equals(toDo.mComments) : toDo.mComments == null;
-
     }
 
     @Override
@@ -91,10 +95,13 @@ public class ToDo implements Cloneable{
         result = 31 * result + (mDate != null ? mDate.hashCode() : 0);
         result = 31 * result + (mNotificationDate != null ? mNotificationDate.hashCode() : 0);
         result = 31 * result + (mIdFirebase != null ? mIdFirebase.hashCode() : 0);
+        result = 31 * result + (mUser != null ? mUser.hashCode() : 0);
+        result = 31 * result + (mTable != null ? mTable.hashCode() : 0);
         result = 31 * result + (mPriority ? 1 : 0);
         result = 31 * result + (mFinish ? 1 : 0);
         result = 31 * result + (mNotification ? 1 : 0);
         result = 31 * result + (mSuccess ? 1 : 0);
+        result = 31 * result + (mShowDateTextView ? 1 : 0);
         result = 31 * result + mSync;
         result = 31 * result + mPosition;
         result = 31 * result + (mComments != null ? mComments.hashCode() : 0);
@@ -212,5 +219,13 @@ public class ToDo implements Cloneable{
 
     public void setTable(String mTable) {
         this.mTable = mTable;
+    }
+
+    public boolean isShowDateTextView() {
+        return mShowDateTextView;
+    }
+
+    public void setShowDateTextView(boolean mShowDateTextView) {
+        this.mShowDateTextView = mShowDateTextView;
     }
 }

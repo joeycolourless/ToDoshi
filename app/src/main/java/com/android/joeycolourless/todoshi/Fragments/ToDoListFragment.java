@@ -1,8 +1,7 @@
 package com.android.joeycolourless.todoshi.Fragments;
 
 import android.content.Context;
-import android.content.res.Resources;
-import android.graphics.drawable.Drawable;
+import android.nfc.Tag;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -36,6 +35,7 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -63,6 +63,9 @@ public class ToDoListFragment extends Fragment {
     private List<ToDo> mToDos = new ArrayList<>();
     private FirebaseAuth mAuth;
     private DatabaseReference mFirebaseDatabaseRef;
+    private ToDo mToDoPrevious = new ToDo();
+    //It is variable control visible status mSortDateTextView then many tasks
+    private boolean isOnTheWeek = false;
 
 
     public interface Callbacks{
@@ -133,9 +136,12 @@ public class ToDoListFragment extends Fragment {
 
             firebaseStartSync();
 
-        }else updateUI();
+        }else {
+            ToDoLab.get(getContext()).setTextViewMarksForToDos();
+            updateUI();
+        }
 
-        //updateUI();
+
 
         PollService.setServiceAlarm(getActivity(),true);
 
@@ -145,6 +151,7 @@ public class ToDoListFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        ToDoLab.get(getContext()).setTextViewMarksForToDos();
         updateUI();
     }
 
@@ -287,6 +294,7 @@ public class ToDoListFragment extends Fragment {
                 mAdapter.notifyDataSetChanged();
 
 
+
             updateSubtitle();
 
 
@@ -297,10 +305,12 @@ public class ToDoListFragment extends Fragment {
 
         private TextView mTitleTextView;
         private TextView mDateTextView;
-        //private CheckBox mPriorityCheckBox;
         private ImageView mNotificationStatusImage;
         private ImageView mPriorityStatusImage;
+        private TextView mSortDateTextView;
         private ToDo mToDo;
+
+
 
         public ToDoHolder(View itemView) {
             super(itemView);
@@ -309,9 +319,10 @@ public class ToDoListFragment extends Fragment {
             mDateTextView = (TextView) itemView.findViewById(R.id.list_item_todo_date_text_view);
             mNotificationStatusImage = (ImageView) itemView.findViewById(R.id.notification_status_image_view);
             mPriorityStatusImage = (ImageView) itemView.findViewById(R.id.priority_status_image_view);
+            mSortDateTextView = (TextView)itemView.findViewById(R.id.textview_sort_date_recyclerview);
         }
 
-        public void bindToDo(ToDo toDo){
+        public void bindToDo(ToDo toDo, int position){
             mToDo = toDo;
             mTitleTextView.setText(mToDo.getTitle());
             if (mToDo.getNotificationDate().getTime() < mToDo.getDate().getTime()){
@@ -334,13 +345,36 @@ public class ToDoListFragment extends Fragment {
                 mNotificationStatusImage.setImageResource(R.drawable.ic_notifications_off_black_24dp);
             }
 
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("EEEE", Locale.getDefault());
+
+            if (position == 0){
+                mSortDateTextView.setVisibility(View.VISIBLE);
+                mSortDateTextView.setText(R.string.daily);
+            }else {
+                if (toDo.isShowDateTextView()){
+                    mSortDateTextView.setVisibility(View.VISIBLE);
+                    if (ToDoLab.get(getContext()).isDateMoreThenSevenDays(toDo)){
+                        mSortDateTextView.setText(R.string.on_the_next_week);
+                    }else {
+                        String sortDateTextViewText = getString(R.string.to)+ " " + simpleDateFormat.format(toDo.getNotificationDate());
+                        mSortDateTextView.setText(sortDateTextViewText);
+                    }
+
+                }else mSortDateTextView.setVisibility(View.GONE);
+            }
+
+
+
+
+
+
+
         }
 
         @Override
         public void onClick(View v) {
             mCallbacks.onToDoSelected(mToDo);
         }
-
 
     }
 
@@ -371,7 +405,7 @@ public class ToDoListFragment extends Fragment {
             ToDo toDo = mToDos.get(position);
             toDo.setPosition(position);
             updateToDo(toDo, ToDoTable.NAME, ToDoTable.Cols.UUID);
-            holder.bindToDo(toDo);
+            holder.bindToDo(toDo, position);
         }
 
         @Override

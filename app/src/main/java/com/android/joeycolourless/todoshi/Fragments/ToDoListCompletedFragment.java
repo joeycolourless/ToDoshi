@@ -152,7 +152,7 @@ public class ToDoListCompletedFragment extends Fragment {
                 mTitleTextView.setText(mToDo.getTitle());
                 if (mToDo.getDetails().equals("") || mToDo.getDetails() == null){
                     mDetailsTextView.setText(R.string.no_details);
-                }else mDetailsTextView.setText(mToDo.getDetails());
+                }else mDetailsTextView.setText(mToDo.getDetails().replaceAll("\n", " "));
                 if (mToDo.isSuccess()){
                     mSuccessTextView.setText(R.string.success_button);
                     mSuccessTextView.setTextColor(getResources().getColor(R.color.colorPrimaryDark));
