@@ -245,7 +245,7 @@ public class ToDoFragment extends Fragment implements OnBackPressedListener {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()){
-            case R.id.delete_todo:
+            case R.id.delete_all_completed_todos:
                 callDeleteWindow(getString(R.string.delete_message_delete_button));
                 return true;
             case R.id.share_todo:
@@ -270,7 +270,7 @@ public class ToDoFragment extends Fragment implements OnBackPressedListener {
             @Override
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()){
-                    case R.id.delete_todo:
+                    case R.id.delete_all_completed_todos:
                         callDeleteWindow(getString(R.string.delete_message_delete_button));
                         return true;
                     case R.id.share_todo:

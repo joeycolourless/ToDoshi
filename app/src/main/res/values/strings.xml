@@ -7,8 +7,8 @@
     <string name="todo_priority_label">Priority?</string>
     <string name="date_picker_title">Red time</string>
     <string name="new_todo">New Task</string>
-    <string name="show_subtitle">Show Subtitle</string>
-    <string name="hide_subtitle">Hide Subtitle</string>
+    <string name="show_email">Show Email</string>
+    <string name="hide_email">Hide Email</string>
     <string name="subtitle_format">%1$s tasks</string>
     <string name="delete_task">Delete</string>
     <string name="todo_list_fragment_text_view">Enter your first task</string>

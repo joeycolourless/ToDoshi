@@ -52,7 +52,7 @@ public class ToDoListCompletedFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
-            case R.id.delete_todo:
+            case R.id.delete_all_completed_todos:
                 ToDoLab.get(getContext()).deleteAllToDos(ToDODbSchema.ToDoCompletedTable.NAME);
                 updateUI();
                 return true;

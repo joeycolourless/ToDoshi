@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/delete_todo"
+        android:id="@+id/delete_all_completed_todos"
         android:title="@string/delete_task"
         app:showAsAction="ifRoom"
         android:icon="@drawable/ic_delete_forever_white_48dp"/>

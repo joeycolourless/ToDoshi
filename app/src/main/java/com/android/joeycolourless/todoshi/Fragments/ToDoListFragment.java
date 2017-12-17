@@ -1,7 +1,6 @@
 package com.android.joeycolourless.todoshi.Fragments;
 
 import android.content.Context;
-import android.nfc.Tag;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -35,7 +34,6 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -57,15 +55,12 @@ public class ToDoListFragment extends Fragment {
 
     private RecyclerView mToDoRecyclerView;
     private ToDoAdapter mAdapter;
-    private boolean mSubtitleVisible;
+    private boolean mSubtitleVisible = true;
     private TextView mTextView;
     private Callbacks mCallbacks;
     private List<ToDo> mToDos = new ArrayList<>();
     private FirebaseAuth mAuth;
     private DatabaseReference mFirebaseDatabaseRef;
-    private ToDo mToDoPrevious = new ToDo();
-    //It is variable control visible status mSortDateTextView then many tasks
-    private boolean isOnTheWeek = false;
 
 
     public interface Callbacks{
@@ -197,9 +192,9 @@ public class ToDoListFragment extends Fragment {
 
         MenuItem subtitleItem = menu.findItem(R.id.menu_item_show_subtitle);
         if (mSubtitleVisible) {
-            subtitleItem.setTitle(R.string.hide_subtitle);
+            subtitleItem.setTitle(R.string.hide_email);
         }else {
-            subtitleItem.setTitle(R.string.show_subtitle);
+            subtitleItem.setTitle(R.string.show_email);
         }
     }
 
@@ -251,9 +246,10 @@ public class ToDoListFragment extends Fragment {
     }
 
     private void updateSubtitle(){
-        ToDoLab toDoLab = ToDoLab.get(getActivity());
-        int toDoCount = toDoLab.getToDos(ToDoTable.NAME).size();
-        String subtitle = getResources().getQuantityString(R.plurals.subtitle_plural, toDoCount, toDoCount);
+        //ToDoLab toDoLab = ToDoLab.get(getActivity());
+        //int toDoCount = toDoLab.getToDos(ToDoTable.NAME).size();
+        //String subtitle = getResources().getQuantityString(R.plurals.subtitle_plural, toDoCount, toDoCount);
+        String subtitle = mAuth.getCurrentUser().getEmail();
 
         if (!mSubtitleVisible){
             subtitle = null;

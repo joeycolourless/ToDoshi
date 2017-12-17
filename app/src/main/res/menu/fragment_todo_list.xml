@@ -12,7 +12,7 @@
         app:showAsAction="never"/>
     <item
         android:id="@+id/menu_item_show_subtitle"
-        android:title="@string/show_subtitle"
+        android:title="@string/show_email"
         android:icon="@drawable/ic_subtitles_white_24dp"
         app:showAsAction="never"/>
     <item
