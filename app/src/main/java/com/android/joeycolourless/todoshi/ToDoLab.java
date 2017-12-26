@@ -155,13 +155,15 @@ public class ToDoLab {
 
     }
 
-    public void deleteAllToDos(String tableName){
-        List<ToDo> list = getToDos(tableName);
-        for (ToDo toDo : list){
-            firebaseSyncToDO(toDo, tableName, DELETE, mContext);
+    public void deleteAllToDos(String tableName, boolean fromFirebaseToo){
+        if (fromFirebaseToo){
+            List<ToDo> list = getToDos(tableName);
+            for (ToDo toDo : list){
+                firebaseSyncToDO(toDo, tableName, DELETE, mContext);
+            }
         }
-        mDateBase.delete(tableName, null, null);
 
+        mDateBase.delete(tableName, null, null);
     }
 
     public ToDo getTodo(UUID id, String tableName, String uuid){

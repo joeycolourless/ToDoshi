@@ -1,6 +1,7 @@
 package com.android.joeycolourless.todoshi;
 
 
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
@@ -12,10 +13,13 @@ import android.support.v4.app.FragmentActivity;
 
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.LinearInterpolator;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
@@ -47,6 +51,9 @@ public class StartActivity extends FragmentActivity{
     private Button signUpButton;
     private Button guestButton;
 
+    private TextView emailLabel;
+    private TextView passLabel;
+
     private EditText passConfirmET;
     private EditText password;
     private EditText email;
@@ -59,7 +66,11 @@ public class StartActivity extends FragmentActivity{
     private int fieldLength;
 
     private int previousCharLength;
-    private boolean isSignUp = false;
+    private boolean isSignUp = true;
+
+    private float mScreenHeigth;
+    private float mScreenWidth;
+
 
     @Override
     protected void onStart() {
@@ -91,7 +102,19 @@ public class StartActivity extends FragmentActivity{
             }
         };
 
+        emailLabel = (TextView)findViewById(R.id.textView_email_auth_fragment);
+        passLabel = (TextView)findViewById(R.id.textView_password_auth_fragment);
+
         email = (EditText) findViewById(R.id.editText_email_auth_fragment);
+
+        DisplayMetrics displaymetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
+        mScreenWidth = displaymetrics.widthPixels;
+        mScreenHeigth = displaymetrics.heightPixels;
+
+
+
+
         previousCharLength = 17;
         email.addTextChangedListener(new TextWatcher() {
             @Override
@@ -305,16 +328,82 @@ public class StartActivity extends FragmentActivity{
             signUpButton.setEnabled(true);
         }
         if (isSignUp) {
+            emailLabel.setAlpha(0f);
+            passLabel.setAlpha(0f);
             email.setText("");
+            email.setAlpha(0f);
             password.setText("");
+            password.setAlpha(0f);
             passConfirmET.setVisibility(View.INVISIBLE);
             isSignUp = false;
             signInButton.setText(R.string.sign_in);
+            signInButton.setAlpha(0f);
             signUpButton.setText(R.string.sign_up);
+            signUpButton.setAlpha(0f);
+            guestButton.setAlpha(0f);
+
+            animateViews();
         }
     }
     private void errorMassage(String text){
         Toast.makeText(getContext(), text, Toast.LENGTH_SHORT).show();
+    }
+
+    private void animateViews(){
+        long animateDuration = 2000;
+
+        final ValueAnimator animatorEditTexts = ValueAnimator.ofFloat(-mScreenWidth, 0);
+        animatorEditTexts.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                float value = (float)animation.getAnimatedValue();
+
+                email.setTranslationX(value);
+                email.setAlpha(1f);
+                password.setTranslationX(value);
+                password.setAlpha(1f);
+
+
+            }
+        });
+        animatorEditTexts.setInterpolator(new LinearInterpolator());
+        animatorEditTexts.setDuration(animateDuration);
+        animatorEditTexts.start();
+
+        final ValueAnimator animatorTextViews = ValueAnimator.ofFloat(mScreenWidth, 0);
+        animatorTextViews.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                float value = (float)animation.getAnimatedValue();
+
+                emailLabel.setTranslationX(value);
+                emailLabel.setAlpha(1f);
+                passLabel.setTranslationX(value);
+                passLabel.setAlpha(1f);
+            }
+        });
+        animatorTextViews.setInterpolator(new LinearInterpolator());
+        animatorTextViews.setDuration(animateDuration);
+        animatorTextViews.start();
+
+        ValueAnimator animatorButtons = ValueAnimator.ofFloat(mScreenHeigth / 2, 0);
+        animatorButtons.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                float value = (float)animation.getAnimatedValue();
+
+                signInButton.setTranslationY(value);
+                signInButton.setAlpha(1f);
+                signUpButton.setTranslationY(value);
+                signUpButton.setAlpha(1f);
+                guestButton.setTranslationY(value);
+                guestButton.setAlpha(1f);
+            }
+        });
+        animatorButtons.setInterpolator(new LinearInterpolator());
+        animatorButtons.setDuration(animateDuration);
+        animatorButtons.start();
+
     }
 
     private Context getContext() {

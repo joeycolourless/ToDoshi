@@ -49,8 +49,8 @@
         android:cursorVisible="true"
         android:ems="10"
         android:inputType="textEmailAddress"
-        android:textSize="@dimen/ampm_label_size"
         android:textAlignment="center"
+        android:textSize="@dimen/ampm_label_size"
         tools:layout_editor_absoluteX="85dp"
         tools:layout_editor_absoluteY="178dp" />
 

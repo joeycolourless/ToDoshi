@@ -53,7 +53,7 @@ public class ToDoListCompletedFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.delete_all_completed_todos:
-                ToDoLab.get(getContext()).deleteAllToDos(ToDODbSchema.ToDoCompletedTable.NAME);
+                ToDoLab.get(getContext()).deleteAllToDos(ToDODbSchema.ToDoCompletedTable.NAME, true);
                 updateUI();
                 return true;
             default:
