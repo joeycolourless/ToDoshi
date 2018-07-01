@@ -11,7 +11,7 @@
     <string name="hide_email">Hide Email</string>
     <string name="subtitle_format">%1$s tasks</string>
     <string name="delete_task">Delete</string>
-    <string name="todo_list_fragment_text_view">Enter your first task</string>
+    <string name="todo_list_fragment_text_view">Let\'s start your Parchment</string>
     <plurals name="subtitle_plural">
         <item quantity="one">%1$s task</item>
         <item quantity="other">%1$s tasks</item>

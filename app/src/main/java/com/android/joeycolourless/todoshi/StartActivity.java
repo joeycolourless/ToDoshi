@@ -272,8 +272,8 @@ public class StartActivity extends FragmentActivity{
                 GoogleSignInAccount account = result.getSignInAccount();
                 firebaseAuthWithGoogle(account);
             } else {
-                // Google Sign In failed, update UI appropriately
-                // ...
+                Toast.makeText(getContext(), "Something wrone", Toast.LENGTH_SHORT).show();
+
             }
         }
         if (requestCode == EXIT_ACTION) {
