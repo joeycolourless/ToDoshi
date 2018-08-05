@@ -24,6 +24,7 @@ public class ToDoBaseHelper extends SQLiteOpenHelper {
             ToDoTable.Cols.TITLE + ", " +
             ToDoTable.Cols.DETAILS + ", " +
             ToDoTable.Cols.DATE + ", " +
+            ToDoTable.Cols.DATE_CHANGE + ", " +
             ToDoTable.Cols.PRIORITY +  ", " +
             ToDoTable.Cols.POSITION + ", " +
             ToDoTable.Cols.FINISH + ", " +

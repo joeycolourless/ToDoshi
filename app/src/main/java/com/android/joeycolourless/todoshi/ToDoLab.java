@@ -6,7 +6,6 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
-import android.view.View;
 import android.widget.Toast;
 
 import com.android.joeycolourless.todoshi.datebase.ToDODbSchema;
@@ -18,7 +17,6 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -148,7 +146,7 @@ public class ToDoLab {
 
     public void deleteToDo(ToDo toDo, String tableName, String UUID){
         toDo.setSync(DELETE);
-        updateToDo(toDo, tableName, UUID);
+        //updateToDo(toDo, tableName, UUID);
         firebaseSyncToDO(toDo, tableName, DELETE, mContext);
 
         mDateBase.delete(tableName, UUID + " = ?" , new String[]{toDo.getId().toString()});
@@ -306,6 +304,7 @@ public class ToDoLab {
         values.put(ToDoTable.Cols.TITLE, toDo.getTitle());
         values.put(ToDoTable.Cols.DETAILS, toDo.getDetails());
         values.put(ToDoTable.Cols.DATE, toDo.getDate().getTime());
+        values.put(ToDoTable.Cols.DATE_CHANGE, toDo.getDateChange().getTime());
         values.put(ToDoTable.Cols.PRIORITY, toDo.isPriority() ? 1 : 0);
         values.put(ToDoTable.Cols.FINISH, toDo.isFinish() ? 1 : 0);
         values.put(ToDoTable.Cols.POSITION, toDo.getPosition());

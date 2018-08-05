@@ -24,6 +24,7 @@ public class ToDoCursorWrapper extends CursorWrapper {
         String idFB = getString(getColumnIndex(ToDoTable.Cols.IDFB));
         long date = getLong(getColumnIndex(ToDoTable.Cols.DATE));
         long notificationDate = getLong(getColumnIndex(ToDoTable.Cols.NOTIFICATION_DATE));
+        long dateChange = getLong(getColumnIndex(ToDoTable.Cols.DATE_CHANGE));
         int isPriority = getInt(getColumnIndex(ToDoTable.Cols.PRIORITY));
         int isFinish = getInt(getColumnIndex(ToDoTable.Cols.FINISH));
         int position = getInt(getColumnIndex(ToDoTable.Cols.POSITION));
@@ -38,6 +39,7 @@ public class ToDoCursorWrapper extends CursorWrapper {
         toDo.setTitle(title);
         toDo.setDetails(details);
         toDo.setDate(new Date(date));
+        toDo.setDateChange(new Date(dateChange));
         toDo.setPriority(isPriority != 0);
         toDo.setFinish(isFinish != 0);
         toDo.setPosition(position);

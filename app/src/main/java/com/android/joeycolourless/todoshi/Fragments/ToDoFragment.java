@@ -519,7 +519,12 @@ public class ToDoFragment extends Fragment implements OnBackPressedListener {
             if (mToDo.getTitle().equals("") || mToDo.getTitle() == null) {
                 callDeleteWindow(getString(R.string.text_dialog_window_back_button));
             } else {
+                if (mToDo.equals(mToDoWithoutChange)) {
+                    getActivity().finish();
+                    return;
+                }
                     mToDo.setSync(ToDoLab.ADD_SYNC);
+                    mToDo.setDateChange(new Date());
                     ToDoLab.get(getActivity()).updateToDo(mToDo, ToDoTable.NAME, ToDoTable.Cols.UUID, mToDo.getSync());
                 }
 

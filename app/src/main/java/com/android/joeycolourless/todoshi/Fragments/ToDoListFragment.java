@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.joeycolourless.todoshi.PollService;
 import com.android.joeycolourless.todoshi.R;
@@ -73,14 +74,18 @@ public class ToDoListFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        if (StartActivity.isOnline(getContext())) {
-            List<ToDo> list = ToDoLab.get(getContext()).getToDos(ToDODbSchema.ToDoDeletedTable.NAME);
-            if (list.size() != 0) {
-                for (ToDo toDo : list) {
-                    ToDoLab.get(getContext()).firebaseSyncToDO(toDo, ToDoTable.NAME, ToDoLab.DELETE, getContext());
+        Context context = getContext();
+        if (context != null) {
+            if (StartActivity.isOnline(context)) {
+                List<ToDo> list = ToDoLab.get(getContext()).getToDos(ToDODbSchema.ToDoDeletedTable.NAME);
+                if (list.size() != 0) {
+                    for (ToDo toDo : list) {
+                        ToDoLab.get(getContext()).firebaseSyncToDO(toDo, ToDoTable.NAME, ToDoLab.DELETE, getContext());
+                    }
                 }
             }
-        }
+        } else
+            Toast.makeText(getContext(), "Context is null", Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -212,6 +217,9 @@ public class ToDoListFragment extends Fragment {
                 ToDoLab.get(getContext()).deleteAllToDos(ToDODbSchema.ToDoCompletedTable.NAME, false);
                 mAuth.signOut();
                 getActivity().finish();
+            case R.id.menu_item_update_list_from_db:
+                ToDoLab.get(getContext()).deleteAllToDos(ToDoTable.NAME, false);
+                firebaseStartSync();
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -237,7 +245,7 @@ public class ToDoListFragment extends Fragment {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
+                Toast.makeText(getContext(), "Database error " + databaseError.toString(), Toast.LENGTH_LONG).show();
             }
 
         });

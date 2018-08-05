@@ -13,6 +13,7 @@ public class ToDODbSchema {
             public static final String TITLE = "title";
             public static final String DETAILS = "details";
             public static final String DATE = "date";
+            public static final String DATE_CHANGE = "date_change";
             public static final String PRIORITY = "priority";
             public static final String POSITION = "position";
             public static final String NOTIFICATION_DATE = "notification_date";
